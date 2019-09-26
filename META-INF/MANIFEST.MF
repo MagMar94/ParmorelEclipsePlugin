@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Parmorel
+Bundle-SymbolicName: hvl.plugin.parmorel;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.ui
+Automatic-Module-Name: hvl.plugin.parmorel
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
