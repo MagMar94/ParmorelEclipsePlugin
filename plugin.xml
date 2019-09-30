@@ -60,6 +60,19 @@
    </extension>
    <extension
          point="org.eclipse.ui.views">
+      <view
+            allowMultiple="false"
+            category="hvl.plugin.parmorel.morelrepair"
+            class="hvl.plugin.parmorel.views.ModelRepairView"
+            icon="icons/parmorel.png"
+            id="hvl.plugin.parmorel.views.ModelRepairView"
+            name="Model Repair"
+            restorable="true">
+      </view>
+      <category
+            id="hvl.plugin.parmorel.morelrepair"
+            name="Model Repair">
+      </category>
    </extension>
 
 </plugin>
