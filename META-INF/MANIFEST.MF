@@ -3,6 +3,8 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Parmorel
 Bundle-SymbolicName: hvl.plugin.parmorel;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Require-Bundle: org.eclipse.ui
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.emf.ecore.xmi;bundle-version="2.15.0",
+ org.junit.jupiter.api;bundle-version="5.3.1"
 Automatic-Module-Name: hvl.plugin.parmorel
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
