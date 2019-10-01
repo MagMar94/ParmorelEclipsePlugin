@@ -24,14 +24,32 @@
    <extension
          point="org.eclipse.ui.menus">
       <menuContribution
-            allPopups="false"
-            locationURI="toolbar:hvl.plugin.parmorel.views.ModelRepairView">
+            locationURI="popup:org.eclipse.jdt.ui.PackageExplorer?after=additions">
          <command
                commandId="hvl.plugin.parmorel.commands.repairCommand"
                icon="icons/bandage.png"
                label="Repair"
                style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate
+                     ifEmpty="false"
+                     operator="or">
+                  <test
+                        property="org.eclipse.core.resources.extension"
+                        value="ecore">
+                  </test>
+               </iterate>
+            </visibleWhen>
          </command>
+         <separator
+               name="parmorel"
+               visible="false">
+         </separator>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:org.eclipse.ui.navigator.ProjectExplorer#PopupMenu?after=additions">
       </menuContribution>
    </extension>
    <extension
