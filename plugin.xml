@@ -25,11 +25,16 @@
          point="org.eclipse.ui.menus">
       <menuContribution
             locationURI="popup:org.eclipse.ui.popup.any">
-         <command
-               commandId="hvl.plugin.parmorel.commands.repairCommand"
-               icon="icons/bandage.png"
-               label="Repair"
-               style="push">
+         <menu
+               icon="icons/parmorel.png"
+               id="hvl.plugin.parmorel.menues.main"
+               label="Parmorel">
+            <command
+                  commandId="hvl.plugin.parmorel.commands.repairCommand"
+                  icon="icons/bandage.png"
+                  label="Repair"
+                  style="push">
+            </command>
             <visibleWhen
                   checkEnabled="false">
                <iterate
@@ -41,11 +46,7 @@
                   </test>
                </iterate>
             </visibleWhen>
-         </command>
-         <separator
-               name="parmorel"
-               visible="false">
-         </separator>
+         </menu>
       </menuContribution>
       <menuContribution
             allPopups="false"
