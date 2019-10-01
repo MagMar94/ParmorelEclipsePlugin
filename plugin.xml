@@ -13,12 +13,25 @@
             name="Sample Command"
             id="hvl.plugin.parmorel.commands.sampleCommand">
       </command>
+      <category
+            id="hvl.plugin.parmorel.commands.category"
+            name="Rapairing">
+      </category>
+      <command
+            categoryId="hvl.plugin.parmorel.commands.category"
+            id="hvl.plugin.parmorel.commands.repairCommand"
+            name="Repair Command">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
             class="hvl.plugin.parmorel.handlers.SampleHandler"
             commandId="hvl.plugin.parmorel.commands.sampleCommand">
+      </handler>
+      <handler
+            class="hvl.plugin.parmorel.handlers.RepairHandler"
+            commandId="hvl.plugin.parmorel.commands.repairCommand">
       </handler>
    </extension>
    <extension
@@ -56,6 +69,16 @@
                   tooltip="Say hello world">
             </command>
          </toolbar>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:hvl.plugin.parmorel.views.ModelRepairView">
+         <command
+               commandId="hvl.plugin.parmorel.commands.repairCommand"
+               icon="icons/bandage.png"
+               label="Repair"
+               style="push">
+         </command>
       </menuContribution>
    </extension>
    <extension
