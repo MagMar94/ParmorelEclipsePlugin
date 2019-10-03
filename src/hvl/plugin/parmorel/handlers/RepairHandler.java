@@ -7,10 +7,17 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ListSelectionDialog;
 
 import hvl.projectparmorel.ml.QLearning;
@@ -49,16 +56,15 @@ public class RepairHandler implements IHandler {
 		dialog.open();
 		Object[] selection = dialog.getResult();
 		if (null == selection) {
-			MessageDialog.openWarning(shell, "Warning", "You did not select anything!");
+			MessageDialog.openWarning(shell, "Warning", "You did not select any preferences!");
 		} else {
+			IPath filePath = getPathToSelectedFile();
+			
 			String[] result = new String[selection.length];
 			System.arraycopy(selection, 0, result, 0, selection.length);
-//			MessageDialog.openInformation(shell, "Info", "You have selected" + Arrays.toString(result));
 
 			List<Integer> preferences = getPreferencesFrom(result);
 			QLearning qLearning = new QLearning(preferences);
-			
-
 		}
 
 		return null;
@@ -89,6 +95,20 @@ public class RepairHandler implements IHandler {
 		if(preferenceAsString.equals(punishDeletion))
 			return 4;
 		return -1;
+	}
+	
+	private IPath getPathToSelectedFile() {
+		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+	    if (window != null)
+	    {
+	        IStructuredSelection selection = (IStructuredSelection) window.getSelectionService().getSelection();
+	        Object firstElement = selection.getFirstElement();
+	        if(firstElement instanceof IFile) {
+	        	IPath path = ((IFile) firstElement).getFullPath();
+	        	return path;
+	        }
+	    }
+	    return null;
 	}
 
 	@Override
