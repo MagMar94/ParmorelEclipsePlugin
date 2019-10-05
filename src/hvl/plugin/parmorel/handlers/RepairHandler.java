@@ -1,5 +1,8 @@
 package hvl.plugin.parmorel.handlers;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,9 +11,11 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -58,13 +63,39 @@ public class RepairHandler implements IHandler {
 		if (null == selection) {
 			MessageDialog.openWarning(shell, "Warning", "You did not select any preferences!");
 		} else {
-			IPath filePath = getPathToSelectedFile();
-			
 			String[] result = new String[selection.length];
 			System.arraycopy(selection, 0, result, 0, selection.length);
-
 			List<Integer> preferences = getPreferencesFrom(result);
 			QLearning qLearning = new QLearning(preferences);
+			qLearning.loadKnowledge();
+			
+			IFile file = getSelectedFile();
+			File destinationFile = new File(file.getLocation().toFile().getParent() + "_temp_" + file.getName());
+			try {
+				Files.copy(file.getLocation().toFile().toPath(), destinationFile.toPath());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			URI uri = URI.createFileURI(destinationFile.getAbsolutePath());
+			Resource model = qLearning.getResourceSet().getResource(uri, true);
+			Resource auxModel = qLearning.getResourceSet().createResource(uri);
+			auxModel.getContents().addAll(EcoreUtil.copyAll(model.getContents()));
+
+//			
+//			try {
+//				file.copy(file.getFullPath(), 0, null);
+//			} catch (CoreException e) {
+//				e.printStackTrace();
+//			}
+
+			
+
+			
+
+//			File dest = new File("temp_" + file.getName());
+//			URI copyUri = URI.createFileURI(dest.getAbsolutePath());
+			
+			qLearning.fixModel(model, uri);
 		}
 
 		return null;
@@ -97,15 +128,14 @@ public class RepairHandler implements IHandler {
 		return -1;
 	}
 	
-	private IPath getPathToSelectedFile() {
+	private IFile getSelectedFile() {
 		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 	    if (window != null)
 	    {
 	        IStructuredSelection selection = (IStructuredSelection) window.getSelectionService().getSelection();
 	        Object firstElement = selection.getFirstElement();
 	        if(firstElement instanceof IFile) {
-	        	IPath path = ((IFile) firstElement).getFullPath();
-	        	return path;
+	        	return (IFile) firstElement;
 	        }
 	    }
 	    return null;
