@@ -64,26 +64,45 @@ public class RepairHandler implements IHandler {
 			String[] result = new String[selection.length];
 			System.arraycopy(selection, 0, result, 0, selection.length);
 			List<Integer> preferences = getPreferencesFrom(result);
-			QLearning qLearning = new QLearning(preferences);
-			
-			IFile file = getSelectedFile();
-			File destinationFile = new File(file.getLocation().toFile().getParent() + "_temp_" + file.getName());
-			try {
-				Files.copy(file.getLocation().toFile().toPath(), destinationFile.toPath());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			URI uri = URI.createFileURI(destinationFile.getAbsolutePath());
-			Resource model = qLearning.getResourceSet().getResource(uri, true);
-			Resource auxModel = qLearning.getResourceSet().createResource(uri);
-			auxModel.getContents().addAll(EcoreUtil.copyAll(model.getContents()));
-			
-			qLearning.fixModel(model, uri);
+			fixSelectedModelWith(preferences);
 		}
 
 		return null;
 	}
-
+	
+	/**
+	 * Takes the selected file and creates a duplicate of the file that will represent the repaired model.
+	 * 
+	 * @return the created duplicate
+	 */
+	private File createDuplicateFileFromSelected() {
+		IFile file = getSelectedFile();
+		File destinationFile = new File(file.getLocation().toFile().getParent() + "_temp_" + file.getName());
+		try {
+			Files.copy(file.getLocation().toFile().toPath(), destinationFile.toPath());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return destinationFile;
+	}
+	
+	/**
+	 * Fixes the selected model with the specified preferences.
+	 * 
+	 * @param preferences
+	 */
+	private void fixSelectedModelWith(List<Integer> preferences) {
+		QLearning qLearning = new QLearning(preferences);
+		
+		File destinationFile = createDuplicateFileFromSelected();
+		URI uri = URI.createFileURI(destinationFile.getAbsolutePath());
+		Resource model = qLearning.getResourceSet().getResource(uri, true);
+		Resource auxModel = qLearning.getResourceSet().createResource(uri);
+		auxModel.getContents().addAll(EcoreUtil.copyAll(model.getContents()));
+		
+		qLearning.fixModel(model, uri);
+	}
+	
 	private List<Integer> getPreferencesFrom(String[] stringPreferences) {
 		List<Integer> preferences = new ArrayList<>();
 		for (String prefOption : stringPreferences) {
