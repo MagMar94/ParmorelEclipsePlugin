@@ -67,7 +67,6 @@ public class RepairHandler implements IHandler {
 			System.arraycopy(selection, 0, result, 0, selection.length);
 			List<Integer> preferences = getPreferencesFrom(result);
 			QLearning qLearning = new QLearning(preferences);
-			qLearning.loadKnowledge();
 			
 			IFile file = getSelectedFile();
 			File destinationFile = new File(file.getLocation().toFile().getParent() + "_temp_" + file.getName());
