@@ -34,7 +34,15 @@ public class RepairHandler implements IHandler {
 	private String rewardModification = "Prefer modification of the original model";
 	private String punishModification = "Punish modification of the original model";
 	private String punishDeletion = "Punish deletion";
+	
+	private QLearning qLearning;
+	private boolean isHandled;
 
+	public RepairHandler() {
+		qLearning = new QLearning();
+		isHandled = false;
+	}
+	
 	@Override
 	public void addHandlerListener(IHandlerListener handlerListener) {
 		// TODO Auto-generated method stub
@@ -49,6 +57,7 @@ public class RepairHandler implements IHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
+		isHandled = false;
 		Shell shell = new Shell();
 		String[] options = { shorterSequences, longerSequences, higherInContext, lowerInContext, rewardModification,
 				punishModification, punishDeletion };
@@ -66,7 +75,7 @@ public class RepairHandler implements IHandler {
 			List<Integer> preferences = getPreferencesFrom(result);
 			fixSelectedModelWith(preferences);
 		}
-
+		isHandled = true;
 		return null;
 	}
 	
@@ -92,7 +101,7 @@ public class RepairHandler implements IHandler {
 	 * @param preferences
 	 */
 	private void fixSelectedModelWith(List<Integer> preferences) {
-		QLearning qLearning = new QLearning(preferences);
+		qLearning.setPreferences(preferences);
 		
 		File destinationFile = createDuplicateFileFromSelected();
 		URI uri = URI.createFileURI(destinationFile.getAbsolutePath());
@@ -151,8 +160,7 @@ public class RepairHandler implements IHandler {
 
 	@Override
 	public boolean isHandled() {
-		// TODO Auto-generated method stub
-		return false;
+		return isHandled;
 	}
 
 	@Override
