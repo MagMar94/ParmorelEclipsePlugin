@@ -77,20 +77,6 @@ public class RepairHandler implements IHandler {
 			Resource model = qLearning.getResourceSet().getResource(uri, true);
 			Resource auxModel = qLearning.getResourceSet().createResource(uri);
 			auxModel.getContents().addAll(EcoreUtil.copyAll(model.getContents()));
-
-//			
-//			try {
-//				file.copy(file.getFullPath(), 0, null);
-//			} catch (CoreException e) {
-//				e.printStackTrace();
-//			}
-
-			
-
-			
-
-//			File dest = new File("temp_" + file.getName());
-//			URI copyUri = URI.createFileURI(dest.getAbsolutePath());
 			
 			qLearning.fixModel(model, uri);
 		}
