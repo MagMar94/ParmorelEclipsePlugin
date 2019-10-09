@@ -152,7 +152,10 @@ public class RepairHandler implements IHandler {
 
 	@Override
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
+//		IFile file = getSelectedFile();
+//		URI uri = URI.createFileURI(file.getLocation().toFile().getAbsolutePath());
+//		Resource model = modelFixer.getModel(uri);
+//		return modelFixer.modelIsBroken(model);
 		return true;
 	}
 
