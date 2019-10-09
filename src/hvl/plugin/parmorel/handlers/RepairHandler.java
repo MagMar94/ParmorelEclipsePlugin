@@ -13,7 +13,6 @@ import org.eclipse.core.commands.IHandlerListener;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -23,7 +22,8 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ListSelectionDialog;
 
-import hvl.projectparmorel.ml.QLearning;
+import hvl.projectparmorel.ml.ModelFixer;
+import hvl.projectparmorel.ml.QModelFixer;
 
 public class RepairHandler implements IHandler {
 
@@ -35,11 +35,11 @@ public class RepairHandler implements IHandler {
 	private String punishModification = "Punish modification of the original model";
 	private String punishDeletion = "Punish deletion";
 	
-	private QLearning qLearning;
+	private ModelFixer modelFixer;
 	private boolean isHandled;
 
 	public RepairHandler() {
-		qLearning = new QLearning();
+		modelFixer = new QModelFixer();
 		isHandled = false;
 	}
 	
@@ -101,15 +101,13 @@ public class RepairHandler implements IHandler {
 	 * @param preferences
 	 */
 	private void fixSelectedModelWith(List<Integer> preferences) {
-		qLearning.setPreferences(preferences);
+		modelFixer.setPreferences(preferences);
 		
 		File destinationFile = createDuplicateFileFromSelected();
 		URI uri = URI.createFileURI(destinationFile.getAbsolutePath());
-		Resource model = qLearning.getResourceSet().getResource(uri, true);
-		Resource auxModel = qLearning.getResourceSet().createResource(uri);
-		auxModel.getContents().addAll(EcoreUtil.copyAll(model.getContents()));
+		Resource model = modelFixer.getModel(uri);
 		
-		qLearning.fixModel(model, uri);
+		modelFixer.fixModel(model, uri);
 	}
 	
 	private List<Integer> getPreferencesFrom(String[] stringPreferences) {
