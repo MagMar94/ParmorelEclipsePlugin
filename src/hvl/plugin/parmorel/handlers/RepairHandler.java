@@ -15,19 +15,13 @@ import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.compare.Comparison;
-import org.eclipse.emf.compare.Diff;
 import org.eclipse.emf.compare.EMFCompare;
 import org.eclipse.emf.compare.domain.ICompareEditingDomain;
 import org.eclipse.emf.compare.domain.impl.EMFCompareEditingDomain;
 import org.eclipse.emf.compare.ide.ui.internal.configuration.EMFCompareConfiguration;
 import org.eclipse.emf.compare.ide.ui.internal.editor.ComparisonEditorInput;
-import org.eclipse.emf.compare.ide.ui.internal.editor.ComparisonScopeEditorInput;
-import org.eclipse.emf.compare.merge.BatchMerger;
-import org.eclipse.emf.compare.merge.IBatchMerger;
-import org.eclipse.emf.compare.merge.IMerger;
 import org.eclipse.emf.compare.scope.DefaultComparisonScope;
 import org.eclipse.emf.compare.scope.IComparisonScope;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -47,6 +41,7 @@ import org.eclipse.ui.dialogs.ListSelectionDialog;
 import hvl.projectparmorel.ml.ModelFixer;
 import hvl.projectparmorel.ml.QModelFixer;
 
+@SuppressWarnings("restriction")
 public class RepairHandler implements IHandler {
 
 	private String shorterSequences = "Prefer shorter sequences of actions";
@@ -207,7 +202,6 @@ public class RepairHandler implements IHandler {
 		AdapterFactory adapterFactory = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
 
 		CompareConfiguration configuration = new CompareConfiguration();
-		@SuppressWarnings("restriction")
 		CompareEditorInput input = new ComparisonEditorInput(new EMFCompareConfiguration(configuration), comparison,
 				editingDomain, adapterFactory);
 
