@@ -24,6 +24,7 @@ import org.eclipse.emf.compare.domain.ICompareEditingDomain;
 import org.eclipse.emf.compare.domain.impl.EMFCompareEditingDomain;
 import org.eclipse.emf.compare.ide.ui.internal.configuration.EMFCompareConfiguration;
 import org.eclipse.emf.compare.ide.ui.internal.editor.ComparisonEditorInput;
+import org.eclipse.emf.compare.ide.ui.internal.editor.ComparisonScopeEditorInput;
 import org.eclipse.emf.compare.merge.BatchMerger;
 import org.eclipse.emf.compare.merge.IBatchMerger;
 import org.eclipse.emf.compare.merge.IMerger;
@@ -191,11 +192,13 @@ public class RepairHandler implements IHandler {
 		//ComparisonEditorInput
 		IComparisonScope scope = new DefaultComparisonScope(resourceSet1, resourceSet2, null);
 		Comparison comparison = EMFCompare.builder().build().compare(scope);
+	    EMFCompare comparator = EMFCompare.builder().build();
 		
 		ICompareEditingDomain editingDomain = EMFCompareEditingDomain.create(resourceSet1, resourceSet2, null);
 		AdapterFactory adapterFactory = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
-	    CompareEditorInput input = new ComparisonEditorInput(new EMFCompareConfiguration(configuration), comparison, editingDomain, adapterFactory);
-
+//	    CompareEditorInput input = new ComparisonEditorInput(new EMFCompareConfiguration(configuration), comparison, editingDomain, adapterFactory);
+	    CompareEditorInput input = new ComparisonScopeEditorInput(new EMFCompareConfiguration(configuration), 
+	            editingDomain, adapterFactory, comparator, scope);
 //		CompareEditorInput input = new ComparisonEditorInput(new CompareConfiguration(), comparison, scope);
 		
 		 CompareUI.openCompareDialog(input); // or CompareUI.openCompareEditor(input);
