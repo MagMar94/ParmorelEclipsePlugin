@@ -56,7 +56,7 @@ public class RepairHandler implements IHandler {
 	private String rewardModification = "Prefer modification of the original model";
 	private String punishModification = "Punish modification of the original model";
 	private String punishDeletion = "Punish deletion";
-	
+
 	private ModelFixer modelFixer;
 	private boolean isHandled;
 
@@ -64,7 +64,7 @@ public class RepairHandler implements IHandler {
 		modelFixer = new QModelFixer();
 		isHandled = false;
 	}
-	
+
 	@Override
 	public void addHandlerListener(IHandlerListener handlerListener) {
 		// TODO Auto-generated method stub
@@ -100,9 +100,10 @@ public class RepairHandler implements IHandler {
 		isHandled = true;
 		return null;
 	}
-	
+
 	/**
-	 * Takes the selected file and creates a duplicate of the file that will represent the repaired model.
+	 * Takes the selected file and creates a duplicate of the file that will
+	 * represent the repaired model.
 	 * 
 	 * @return the created duplicate
 	 */
@@ -115,7 +116,7 @@ public class RepairHandler implements IHandler {
 		}
 		return destinationFile;
 	}
-	
+
 	/**
 	 * Fixes the selected model with the specified preferences.
 	 * 
@@ -123,17 +124,17 @@ public class RepairHandler implements IHandler {
 	 */
 	private void fixSelectedModelWith(List<Integer> preferences) {
 		modelFixer.setPreferences(preferences);
-		
+
 		File file = getSelectedFile();
 		File destinationFile = createDuplicateFileFrom(file);
 		URI uri = URI.createFileURI(destinationFile.getAbsolutePath());
 		Resource model = modelFixer.getModel(uri);
-		
+
 		modelFixer.fixModel(model, uri);
-		
+
 		compare(file, destinationFile);
 	}
-	
+
 	private List<Integer> getPreferencesFrom(String[] stringPreferences) {
 		List<Integer> preferences = new ArrayList<>();
 		for (String prefOption : stringPreferences) {
@@ -144,37 +145,49 @@ public class RepairHandler implements IHandler {
 	}
 
 	private int getPreferenceNumberFrom(String preferenceAsString) {
-		if(preferenceAsString.equals(shorterSequences))
+		if (preferenceAsString.equals(shorterSequences))
 			return 0;
-		if(preferenceAsString.equals(longerSequences))
+		if (preferenceAsString.equals(longerSequences))
 			return 1;
-		if(preferenceAsString.equals(higherInContext))
+		if (preferenceAsString.equals(higherInContext))
 			return 2;
-		if(preferenceAsString.equals(lowerInContext))
+		if (preferenceAsString.equals(lowerInContext))
 			return 3;
-		if(preferenceAsString.equals(rewardModification))
+		if (preferenceAsString.equals(rewardModification))
 			return 6;
-		if(preferenceAsString.equals(punishModification))
+		if (preferenceAsString.equals(punishModification))
 			return 5;
-		if(preferenceAsString.equals(punishDeletion))
+		if (preferenceAsString.equals(punishDeletion))
 			return 4;
 		return -1;
 	}
-	
+
 	private File getSelectedFile() {
 		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-	    if (window != null)
-	    {
-	        IStructuredSelection selection = (IStructuredSelection) window.getSelectionService().getSelection();
-	        Object firstElement = selection.getFirstElement();
-	        if(firstElement instanceof IFile) {
-	        	IFile selectedFile = (IFile) firstElement;
-	        	return selectedFile.getLocation().toFile();
-	        }
-	    }
-	    return null;
+		if (window != null) {
+			IStructuredSelection selection = (IStructuredSelection) window.getSelectionService().getSelection();
+			Object firstElement = selection.getFirstElement();
+			if (firstElement instanceof IFile) {
+				IFile selectedFile = (IFile) firstElement;
+				return selectedFile.getLocation().toFile();
+			}
+		}
+		return null;
 	}
 
+	/**
+	 * Compares to models.
+	 * 
+	 * @see <a href=
+	 *      "https://wiki.eclipse.org/EMF_Compare/How_To_Open_Compare_Dialog_With_Comparison">Documentation
+	 *      on EMF Compare</a> Both are available from the
+	 *      org.eclipse.emf.compare.ide.ui plug-in, in the package
+	 *      org.eclipse.emf.compare.ide.ui.internal.editor. This is still
+	 *      provisional API so we may break it any time.
+	 * 
+	 * @param model1
+	 * @param model2
+	 */
 	private void compare(File model1, File model2) {
 		URI uri1 = URI.createFileURI(model1.getAbsolutePath());
 		URI uri2 = URI.createFileURI(model2.getAbsolutePath());
@@ -187,50 +200,19 @@ public class RepairHandler implements IHandler {
 		resourceSet1.getResource(uri1, true);
 		resourceSet2.getResource(uri2, true);
 
-		CompareConfiguration configuration = new CompareConfiguration();
-		
-		//ComparisonEditorInput
 		IComparisonScope scope = new DefaultComparisonScope(resourceSet1, resourceSet2, null);
 		Comparison comparison = EMFCompare.builder().build().compare(scope);
-	    EMFCompare comparator = EMFCompare.builder().build();
-		
+
 		ICompareEditingDomain editingDomain = EMFCompareEditingDomain.create(resourceSet1, resourceSet2, null);
 		AdapterFactory adapterFactory = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
-//	    CompareEditorInput input = new ComparisonEditorInput(new EMFCompareConfiguration(configuration), comparison, editingDomain, adapterFactory);
-	    CompareEditorInput input = new ComparisonScopeEditorInput(new EMFCompareConfiguration(configuration), 
-	            editingDomain, adapterFactory, comparator, scope);
-//		CompareEditorInput input = new ComparisonEditorInput(new CompareConfiguration(), comparison, scope);
-		
-		 CompareUI.openCompareDialog(input); // or CompareUI.openCompareEditor(input);
-//		List<Diff> differences = comparison.getDifferences();
-//		// Let's merge every single diff
-//		IMerger.Registry mergerRegistry = new IMerger.RegistryImpl();
-//		IBatchMerger merger = new BatchMerger(mergerRegistry);
-//		merger.copyAllLeftToRight(differences, new BasicMonitor());
-		
+
+		CompareConfiguration configuration = new CompareConfiguration();
+		@SuppressWarnings("restriction")
+		CompareEditorInput input = new ComparisonEditorInput(new EMFCompareConfiguration(configuration), comparison,
+				editingDomain, adapterFactory);
+
+		CompareUI.openCompareDialog(input);
 	}
-	
-	
-//	public void compare(Notifier left, Notifier right, Notifier ancestor) {
-//	    EMFCompare comparator = EMFCompare.builder().build();
-//	    Comparison comparison = comparator.compare(EMFCompare.createDefaultScope(left, right, ancestor));
-//
-//	    ICompareEditingDomain editingDomain = EMFCompareEditingDomain.create(left, right, ancestor);
-//	    AdapterFactory adapterFactory = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
-//	    CompareEditorInput input = new CompareEditorInput(new CompareConfiguration(), comparison, editingDomain, adapterFactory);
-//
-//	   
-//	}
-//	private void compare(Notifier left, Notifier right, Notifier ancestor) {
-//	    EMFCompare comparator = EMFCompare.builder().build();
-//	    Comparison comparison = comparator.compare(new DefaultComparisonScope(left, right, ancestor));
-//
-//	    ICompareEditingDomain editingDomain = EMFCompareEditingDomain.create(left, right, ancestor);
-//	    AdapterFactory adapterFactory = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
-//	    CompareEditorInput input = new ComparisonEditorInput(new CompareConfiguration(), comparison, editingDomain, adapterFactory);
-//
-//	    CompareUI.openCompareDialog(input); // or CompareUI.openCompareEditor(input);
-//	}
 
 	@Override
 	public boolean isEnabled() {
