@@ -102,10 +102,10 @@ public class RepairHandler implements IHandler {
 	 * 
 	 * @return the created duplicate
 	 */
-	private File createDuplicateFileFrom(File selectedFile) {
-		File destinationFile = new File(selectedFile.getParent() + "_temp_" + selectedFile.getName());
+	private File createDuplicateFileFrom(File original) {
+		File destinationFile = new File(original.getParent() + "_temp_" + original.getName());
 		try {
-			Files.copy(selectedFile.toPath(), destinationFile.toPath());
+			Files.copy(original.toPath(), destinationFile.toPath());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
