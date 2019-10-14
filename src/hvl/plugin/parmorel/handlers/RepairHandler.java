@@ -38,8 +38,6 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ListSelectionDialog;
 
-import hvl.projectparmorel.ml.Error;
-import hvl.projectparmorel.ml.ErrorExtractor;
 import hvl.projectparmorel.ml.ModelFixer;
 import hvl.projectparmorel.ml.QModelFixer;
 
@@ -104,23 +102,15 @@ public class RepairHandler implements IHandler {
 	 * @param preferences
 	 */
 	private void fixSelectedModelWith(List<Integer> preferences) {
-		modelFixer.setPreferences(preferences); //ok
+		modelFixer.setPreferences(preferences);
 
 		File file = getSelectedFile();
 		file = new File("/Users/Magnus/Skole/DAT300/EclipseWorkspace/ParmorelRunnable/mutants/b10.ecore");
-		File destinationFile = createDuplicateFileFrom(file); //ok
-		URI uri = URI.createFileURI(destinationFile.getAbsolutePath()); //ok
-		Resource model = modelFixer.getModel(uri); //ok
+		File destinationFile = createDuplicateFileFrom(file);
+		URI uri = URI.createFileURI(destinationFile.getAbsolutePath());
+		Resource model = modelFixer.getModel(uri);
 		
-		Resource modelCopy = modelFixer.copy(model, uri); //ok
-		List<Error> errors = ErrorExtractor.extractErrorsFrom(modelCopy); //ok
-		System.out.println("Errors: " + errors.toString());
-		
-//		Resource auxModel = modelFixer.copy(model, uri);
-//		List<hvl.projectparmorel.ml.Error> errors = ErrorExtractor.extractErrorsFrom(auxModel);
-//		System.out.println("INITIAL ERRORS:" + errors.toString());
-		
-		modelFixer.fixModel(model, uri); //ok
+		modelFixer.fixModel(model, uri);
 
 		compare(file, destinationFile);
 	}
@@ -145,10 +135,9 @@ public class RepairHandler implements IHandler {
 	 * @return the created duplicate
 	 */
 	private File createDuplicateFileFrom(File original) {
-		File destinationFile = new File(original.getParent() + "_temp_" + original.getName()); //ok
+		File destinationFile = new File(original.getParent() + "_temp_" + original.getName());
 		try {
-//			java.nio.file.Path p = java.nio.file.FileSystems.getDefault().getPath("/Users/Magnus/Skole/DAT300/EclipseWorkspace/ParmorelRunnable/mutants/b10.ecore");
-			Files.copy(original.toPath(), destinationFile.toPath()); //ok
+			Files.copy(original.toPath(), destinationFile.toPath());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
