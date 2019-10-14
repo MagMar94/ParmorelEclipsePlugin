@@ -38,6 +38,8 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ListSelectionDialog;
 
+import hvl.projectparmorel.ml.Error;
+import hvl.projectparmorel.ml.ErrorExtractor;
 import hvl.projectparmorel.ml.ModelFixer;
 import hvl.projectparmorel.ml.QModelFixer;
 
@@ -97,37 +99,60 @@ public class RepairHandler implements IHandler {
 	}
 
 	/**
+	 * Fixes the selected model with the specified preferences.
+	 * 
+	 * @param preferences
+	 */
+	private void fixSelectedModelWith(List<Integer> preferences) {
+		modelFixer.setPreferences(preferences); //ok
+
+		File file = getSelectedFile();
+		file = new File("/Users/Magnus/Skole/DAT300/EclipseWorkspace/ParmorelRunnable/mutants/b10.ecore");
+		File destinationFile = createDuplicateFileFrom(file); //ok
+		URI uri = URI.createFileURI(destinationFile.getAbsolutePath()); //ok
+		Resource model = modelFixer.getModel(uri); //ok
+		
+		Resource modelCopy = modelFixer.copy(model, uri); //ok
+		List<Error> errors = ErrorExtractor.extractErrorsFrom(modelCopy); //ok
+		System.out.println("Errors: " + errors.toString());
+		
+//		Resource auxModel = modelFixer.copy(model, uri);
+//		List<hvl.projectparmorel.ml.Error> errors = ErrorExtractor.extractErrorsFrom(auxModel);
+//		System.out.println("INITIAL ERRORS:" + errors.toString());
+		
+		modelFixer.fixModel(model, uri); //ok
+
+		compare(file, destinationFile);
+	}
+	
+	private File getSelectedFile() {
+		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		if (window != null) {
+			IStructuredSelection selection = (IStructuredSelection) window.getSelectionService().getSelection();
+			Object firstElement = selection.getFirstElement();
+			if (firstElement instanceof IFile) {
+				IFile selectedFile = (IFile) firstElement;
+				return selectedFile.getLocation().toFile();
+			}
+		}
+		return null;
+	}
+	
+	/**
 	 * Takes the selected file and creates a duplicate of the file that will
 	 * represent the repaired model.
 	 * 
 	 * @return the created duplicate
 	 */
 	private File createDuplicateFileFrom(File original) {
-		File destinationFile = new File(original.getParent() + "_temp_" + original.getName());
+		File destinationFile = new File(original.getParent() + "_temp_" + original.getName()); //ok
 		try {
-			Files.copy(original.toPath(), destinationFile.toPath());
+//			java.nio.file.Path p = java.nio.file.FileSystems.getDefault().getPath("/Users/Magnus/Skole/DAT300/EclipseWorkspace/ParmorelRunnable/mutants/b10.ecore");
+			Files.copy(original.toPath(), destinationFile.toPath()); //ok
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return destinationFile;
-	}
-
-	/**
-	 * Fixes the selected model with the specified preferences.
-	 * 
-	 * @param preferences
-	 */
-	private void fixSelectedModelWith(List<Integer> preferences) {
-		modelFixer.setPreferences(preferences);
-
-		File file = getSelectedFile();
-		File destinationFile = createDuplicateFileFrom(file);
-		URI uri = URI.createFileURI(destinationFile.getAbsolutePath());
-		Resource model = modelFixer.getModel(uri);
-
-		modelFixer.fixModel(model, uri);
-
-		compare(file, destinationFile);
 	}
 
 	private List<Integer> getPreferencesFrom(String[] stringPreferences) {
@@ -157,18 +182,7 @@ public class RepairHandler implements IHandler {
 		return -1;
 	}
 
-	private File getSelectedFile() {
-		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-		if (window != null) {
-			IStructuredSelection selection = (IStructuredSelection) window.getSelectionService().getSelection();
-			Object firstElement = selection.getFirstElement();
-			if (firstElement instanceof IFile) {
-				IFile selectedFile = (IFile) firstElement;
-				return selectedFile.getLocation().toFile();
-			}
-		}
-		return null;
-	}
+	
 
 	/**
 	 * Compares to models.
