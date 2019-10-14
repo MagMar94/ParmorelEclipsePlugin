@@ -15,19 +15,13 @@ import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.compare.Comparison;
-import org.eclipse.emf.compare.Diff;
 import org.eclipse.emf.compare.EMFCompare;
 import org.eclipse.emf.compare.domain.ICompareEditingDomain;
 import org.eclipse.emf.compare.domain.impl.EMFCompareEditingDomain;
 import org.eclipse.emf.compare.ide.ui.internal.configuration.EMFCompareConfiguration;
 import org.eclipse.emf.compare.ide.ui.internal.editor.ComparisonEditorInput;
-import org.eclipse.emf.compare.ide.ui.internal.editor.ComparisonScopeEditorInput;
-import org.eclipse.emf.compare.merge.BatchMerger;
-import org.eclipse.emf.compare.merge.IBatchMerger;
-import org.eclipse.emf.compare.merge.IMerger;
 import org.eclipse.emf.compare.scope.DefaultComparisonScope;
 import org.eclipse.emf.compare.scope.IComparisonScope;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -47,6 +41,7 @@ import org.eclipse.ui.dialogs.ListSelectionDialog;
 import hvl.projectparmorel.ml.ModelFixer;
 import hvl.projectparmorel.ml.QModelFixer;
 
+@SuppressWarnings("restriction")
 public class RepairHandler implements IHandler {
 
 	private String shorterSequences = "Prefer shorter sequences of actions";
@@ -102,22 +97,6 @@ public class RepairHandler implements IHandler {
 	}
 
 	/**
-	 * Takes the selected file and creates a duplicate of the file that will
-	 * represent the repaired model.
-	 * 
-	 * @return the created duplicate
-	 */
-	private File createDuplicateFileFrom(File selectedFile) {
-		File destinationFile = new File(selectedFile.getParent() + "_temp_" + selectedFile.getName());
-		try {
-			Files.copy(selectedFile.toPath(), destinationFile.toPath());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return destinationFile;
-	}
-
-	/**
 	 * Fixes the selected model with the specified preferences.
 	 * 
 	 * @param preferences
@@ -126,13 +105,43 @@ public class RepairHandler implements IHandler {
 		modelFixer.setPreferences(preferences);
 
 		File file = getSelectedFile();
+		file = new File("/Users/Magnus/Skole/DAT300/EclipseWorkspace/ParmorelRunnable/mutants/b10.ecore");
 		File destinationFile = createDuplicateFileFrom(file);
 		URI uri = URI.createFileURI(destinationFile.getAbsolutePath());
 		Resource model = modelFixer.getModel(uri);
-
+		
 		modelFixer.fixModel(model, uri);
 
 		compare(file, destinationFile);
+	}
+	
+	private File getSelectedFile() {
+		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		if (window != null) {
+			IStructuredSelection selection = (IStructuredSelection) window.getSelectionService().getSelection();
+			Object firstElement = selection.getFirstElement();
+			if (firstElement instanceof IFile) {
+				IFile selectedFile = (IFile) firstElement;
+				return selectedFile.getLocation().toFile();
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Takes the selected file and creates a duplicate of the file that will
+	 * represent the repaired model.
+	 * 
+	 * @return the created duplicate
+	 */
+	private File createDuplicateFileFrom(File original) {
+		File destinationFile = new File(original.getParent() + "_temp_" + original.getName());
+		try {
+			Files.copy(original.toPath(), destinationFile.toPath());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return destinationFile;
 	}
 
 	private List<Integer> getPreferencesFrom(String[] stringPreferences) {
@@ -162,18 +171,7 @@ public class RepairHandler implements IHandler {
 		return -1;
 	}
 
-	private File getSelectedFile() {
-		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-		if (window != null) {
-			IStructuredSelection selection = (IStructuredSelection) window.getSelectionService().getSelection();
-			Object firstElement = selection.getFirstElement();
-			if (firstElement instanceof IFile) {
-				IFile selectedFile = (IFile) firstElement;
-				return selectedFile.getLocation().toFile();
-			}
-		}
-		return null;
-	}
+	
 
 	/**
 	 * Compares to models.
@@ -207,7 +205,6 @@ public class RepairHandler implements IHandler {
 		AdapterFactory adapterFactory = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
 
 		CompareConfiguration configuration = new CompareConfiguration();
-		@SuppressWarnings("restriction")
 		CompareEditorInput input = new ComparisonEditorInput(new EMFCompareConfiguration(configuration), comparison,
 				editingDomain, adapterFactory);
 
