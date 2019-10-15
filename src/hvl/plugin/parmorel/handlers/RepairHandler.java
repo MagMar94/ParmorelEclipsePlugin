@@ -38,8 +38,9 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ListSelectionDialog;
 
-import hvl.projectparmorel.ml.ModelFixer;
-import hvl.projectparmorel.ml.QModelFixer;
+import hvl.projectparmorel.modelrepair.ModelFixer;
+import hvl.projectparmorel.modelrepair.QModelFixer;
+import hvl.projectparmorel.modelrepair.Solution;
 
 @SuppressWarnings("restriction")
 public class RepairHandler implements IHandler {
@@ -105,13 +106,13 @@ public class RepairHandler implements IHandler {
 		modelFixer.setPreferences(preferences);
 
 		File file = getSelectedFile();
-		file = new File("/Users/Magnus/Skole/DAT300/EclipseWorkspace/ParmorelRunnable/mutants/b10.ecore");
 		File destinationFile = createDuplicateFileFrom(file);
 		URI uri = URI.createFileURI(destinationFile.getAbsolutePath());
 		Resource model = modelFixer.getModel(uri);
 		
 		modelFixer.fixModel(model, uri);
-
+		
+		List<Solution> possibleSolutions = modelFixer.getPossibleSolutions();
 		compare(file, destinationFile);
 	}
 	
