@@ -106,14 +106,13 @@ public class RepairHandler implements IHandler {
 		modelFixer.setPreferences(preferences);
 
 		File file = getSelectedFile();
-		File destinationFile = createDuplicateFileFrom(file);
-		URI uri = URI.createFileURI(destinationFile.getAbsolutePath());
-		Resource model = modelFixer.getModel(uri);
 		
-		modelFixer.fixModel(model, uri);
+		
+		modelFixer.fixModel(file);
 		
 		List<Solution> possibleSolutions = modelFixer.getPossibleSolutions();
-		compare(file, destinationFile);
+		possibleSolutions.get(0);
+		compare(file, possibleSolutions.get(0).getModel());
 	}
 	
 	private File getSelectedFile() {
@@ -129,21 +128,7 @@ public class RepairHandler implements IHandler {
 		return null;
 	}
 	
-	/**
-	 * Takes the selected file and creates a duplicate of the file that will
-	 * represent the repaired model.
-	 * 
-	 * @return the created duplicate
-	 */
-	private File createDuplicateFileFrom(File original) {
-		File destinationFile = new File(original.getParent() + "_temp_" + original.getName());
-		try {
-			Files.copy(original.toPath(), destinationFile.toPath());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return destinationFile;
-	}
+
 
 	private List<Integer> getPreferencesFrom(String[] stringPreferences) {
 		List<Integer> preferences = new ArrayList<>();
