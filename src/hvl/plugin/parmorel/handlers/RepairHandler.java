@@ -1,8 +1,6 @@
 package hvl.plugin.parmorel.handlers;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -111,8 +109,11 @@ public class RepairHandler implements IHandler {
 		modelFixer.fixModel(file);
 		
 		List<Solution> possibleSolutions = modelFixer.getPossibleSolutions();
-		possibleSolutions.get(0);
-		compare(file, possibleSolutions.get(0).getModel());
+		
+		for(int i = 0; i < possibleSolutions.size(); i++) {
+			compare(file, possibleSolutions.get(i).getModel());
+		}
+//		compare(file, possibleSolutions.get(0).getModel());
 	}
 	
 	private File getSelectedFile() {
