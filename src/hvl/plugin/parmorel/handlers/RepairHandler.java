@@ -53,10 +53,12 @@ public class RepairHandler implements IHandler {
 
 	private ModelFixer modelFixer;
 	private boolean isHandled;
+	private List<Solution> possibleSolutions;
 
 	public RepairHandler() {
 		modelFixer = new QModelFixer();
 		isHandled = false;
+		possibleSolutions = new ArrayList<Solution>();
 	}
 
 	@Override
@@ -101,6 +103,8 @@ public class RepairHandler implements IHandler {
 	 * @param preferences
 	 */
 	private void fixSelectedModelWith(List<Integer> preferences) {
+		deletePossibleSolutions();
+		
 		modelFixer.setPreferences(preferences);
 
 		File file = getSelectedFile();
@@ -108,14 +112,21 @@ public class RepairHandler implements IHandler {
 		
 		modelFixer.fixModel(file);
 		
-		List<Solution> possibleSolutions = modelFixer.getPossibleSolutions();
+		possibleSolutions = modelFixer.getPossibleSolutions();
 		
-		for(int i = 0; i < possibleSolutions.size(); i++) {
-			compare(file, possibleSolutions.get(i).getModel());
-		}
-//		compare(file, possibleSolutions.get(0).getModel());
+		compare(file, possibleSolutions.get(0).getModel());
 	}
 	
+	/**
+	 * Deletes all the files in the possible solutions and clears the list.
+	 */
+	private void deletePossibleSolutions() {
+		for(Solution solution : possibleSolutions) {
+			solution.getModel().delete();
+		}
+		possibleSolutions.clear();
+	}
+
 	private File getSelectedFile() {
 		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 		if (window != null) {
