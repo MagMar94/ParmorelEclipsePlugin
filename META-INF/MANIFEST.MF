@@ -15,3 +15,5 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.emf.compare.ide.ui;bundle-version="4.4.3"
 Automatic-Module-Name: hvl.plugin.parmorel
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ClassPath: .,
+ libs/swing2swt.jar

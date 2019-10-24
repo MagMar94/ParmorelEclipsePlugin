@@ -33,6 +33,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ListSelectionDialog;
 
@@ -115,6 +116,11 @@ public class RepairHandler implements IHandler {
 		possibleSolutions = modelFixer.getPossibleSolutions();
 		
 		compare(file, possibleSolutions.get(0).getModel());
+		try {
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView("hvl.plugin.parmorel.views.RepairSelectorView");
+		} catch (PartInitException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
