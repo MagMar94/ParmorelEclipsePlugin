@@ -37,8 +37,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ListSelectionDialog;
 
-import hvl.projectparmorel.modelrepair.ModelFixer;
-import hvl.projectparmorel.modelrepair.QModelFixer;
+import hvl.plugin.parmorel.model.ParmorelModelFixer;
 import hvl.projectparmorel.modelrepair.Solution;
 
 @SuppressWarnings("restriction")
@@ -52,14 +51,14 @@ public class RepairHandler implements IHandler {
 	private String punishModification = "Punish modification of the original model";
 	private String punishDeletion = "Punish deletion";
 
-	private ModelFixer modelFixer;
+	
 	private boolean isHandled;
-	private List<Solution> possibleSolutions;
+	private ParmorelModelFixer modelFixer;
+	
 
 	public RepairHandler() {
-		modelFixer = new QModelFixer();
+		modelFixer = new ParmorelModelFixer();
 		isHandled = false;
-		possibleSolutions = new ArrayList<Solution>();
 	}
 
 	@Override
@@ -97,40 +96,19 @@ public class RepairHandler implements IHandler {
 		isHandled = true;
 		return null;
 	}
+	
+	
 
-	/**
-	 * Fixes the selected model with the specified preferences.
-	 * 
-	 * @param preferences
-	 */
 	private void fixSelectedModelWith(List<Integer> preferences) {
-		deletePossibleSolutions();
-		
-		modelFixer.setPreferences(preferences);
-
-		File file = getSelectedFile();
-		
-		
-		modelFixer.fixModel(file);
-		
-		possibleSolutions = modelFixer.getPossibleSolutions();
-		
-		compare(file, possibleSolutions.get(0).getModel());
+		File model = getSelectedFile();
+		List<Solution> possibleSolutions = modelFixer.fixModel(model, preferences);
+		compare(model, possibleSolutions.get(0).getModel());
 		try {
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView("hvl.plugin.parmorel.views.RepairSelectorView");
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	/**
-	 * Deletes all the files in the possible solutions and clears the list.
-	 */
-	private void deletePossibleSolutions() {
-		for(Solution solution : possibleSolutions) {
-			solution.getModel().delete();
-		}
-		possibleSolutions.clear();
+		
 	}
 
 	private File getSelectedFile() {
