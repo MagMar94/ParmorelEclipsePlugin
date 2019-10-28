@@ -167,7 +167,7 @@ public class RepairHandler implements IHandler {
 	 * @param model1
 	 * @param model2
 	 */
-	public void compare(File model1, File model2) {
+	public static void compare(File model1, File model2) {
 		System.out.println("comparing " + model1.getName() + " and " + model2.getName());
 		URI uri1 = URI.createFileURI(model1.getAbsolutePath());
 		URI uri2 = URI.createFileURI(model2.getAbsolutePath());

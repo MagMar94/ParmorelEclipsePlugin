@@ -46,13 +46,4 @@ public class ParmorelModelFixer {
 		}
 		possibleSolutions.clear();
 	}
-	
-	/**
-	 * Gets the original model
-	 * 
-	 * @return the original model
-	 */
-	public File getOriginalModel() {
-		return modelFixer.getOriginalModel();
-	}
 }

@@ -15,7 +15,6 @@ public enum PossibleSolutions {
 	
 	private PossibleSolutions() {
 		solutions = new ArrayList<>();
-		solutions.add(new Solution());
 		viewer = null;
 	}
 	

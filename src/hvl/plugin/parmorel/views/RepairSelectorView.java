@@ -3,7 +3,9 @@ package hvl.plugin.parmorel.views;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.*;
 
+import hvl.plugin.parmorel.handlers.RepairHandler;
 import hvl.plugin.parmorel.model.PossibleSolutions;
+import hvl.projectparmorel.modelrepair.Solution;
 
 import org.eclipse.jface.viewers.*;
 import org.eclipse.swt.graphics.Image;
@@ -169,7 +171,12 @@ public class RepairSelectorView extends ViewPart {
 			public void run() {
 				IStructuredSelection selection = viewer.getStructuredSelection();
 				Object obj = selection.getFirstElement();
-				showMessage("Double-click detected on " + obj.toString());
+				if(obj instanceof Solution) {
+					Solution solution = (Solution) obj;
+					RepairHandler.compare(solution.getOriginal(), solution.getModel());
+				} else {
+					showMessage("An error occured when retrieving the solution.");
+				}
 			}
 		};
 	}
