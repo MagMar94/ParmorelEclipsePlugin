@@ -3,7 +3,6 @@ package hvl.plugin.parmorel.views;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.*;
 
-import hvl.plugin.parmorel.handlers.RepairHandler;
 import hvl.plugin.parmorel.model.PossibleSolutions;
 import hvl.projectparmorel.modelrepair.Solution;
 
@@ -18,7 +17,6 @@ import javax.inject.Inject;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.wb.swt.ResourceManager;
 
 /**
  * This sample class demonstrates how to plug-in a new workbench view. The view
@@ -158,7 +156,7 @@ public class RepairSelectorView extends ViewPart {
 				Object obj = selection.getFirstElement();
 				if(obj instanceof Solution) {
 					Solution solution = (Solution) obj;
-					RepairHandler.compare(solution.getOriginal(), solution.getModel());
+					CompareModelView.compare(solution.getOriginal(), solution.getModel());
 				} else {
 					showMessage("An error occured when retrieving the solution.");
 				}
