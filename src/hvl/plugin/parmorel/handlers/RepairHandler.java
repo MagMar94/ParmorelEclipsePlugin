@@ -42,6 +42,7 @@ import hvl.projectparmorel.modelrepair.Solution;
 
 @SuppressWarnings("restriction")
 public class RepairHandler implements IHandler {
+	public final ParmorelModelFixer modelFixer;
 
 	private String shorterSequences = "Prefer shorter sequences of actions";
 	private String longerSequences = "Prefer longer sequences of actions";
@@ -53,8 +54,6 @@ public class RepairHandler implements IHandler {
 
 	
 	private boolean isHandled;
-	private ParmorelModelFixer modelFixer;
-	
 
 	public RepairHandler() {
 		modelFixer = new ParmorelModelFixer();

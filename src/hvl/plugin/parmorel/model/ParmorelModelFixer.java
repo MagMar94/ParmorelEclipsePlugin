@@ -9,12 +9,14 @@ import hvl.projectparmorel.modelrepair.QModelFixer;
 import hvl.projectparmorel.modelrepair.Solution;
 
 public class ParmorelModelFixer {
-	private ModelFixer modelFixer;
 	private List<Solution> possibleSolutions;
+	
+	private ModelFixer modelFixer;
 	
 	public ParmorelModelFixer() {
 		modelFixer = new QModelFixer();
 		possibleSolutions = new ArrayList<Solution>();
+		
 	}
 	
 	/**
@@ -28,7 +30,8 @@ public class ParmorelModelFixer {
 		modelFixer.setPreferences(preferences);
 		modelFixer.fixModel(model);
 		
-		possibleSolutions =  modelFixer.getPossibleSolutions();
+		possibleSolutions = modelFixer.getPossibleSolutions();
+		PossibleSolutions.INSTANCE.updateSolutions(possibleSolutions);
 		return possibleSolutions;
 	}
 
