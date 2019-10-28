@@ -95,19 +95,14 @@ public class RepairSelectorView extends ViewPart {
 	}
 
 	private void createViewer(Composite parent) {
-		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);	
 		
 		viewer.setContentProvider(new ArrayContentProvider());
-//		viewer.setContentProvider(ArrayContentProvider.getInstance());
-		
 		viewer.setInput(PossibleSolutions.INSTANCE.getSolutions());
 		PossibleSolutions.INSTANCE.setViewer(viewer);
-		
 		viewer.setLabelProvider(new ViewLabelProvider());
 		
 		getSite().setSelectionProvider(viewer);
-		
-//		PossibleSolutions.INSTANCE.setViewer(viewer);
 	}
 
 	private void hookContextMenu() {
@@ -166,7 +161,11 @@ public class RepairSelectorView extends ViewPart {
 		action2.setText("Action 2");
 		action2.setToolTipText("Action 2 tooltip");
 		action2.setImageDescriptor(workbench.getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));
-		doubleClickAction = new Action() {
+		doubleClickAction = getCompareAction();
+	}
+	
+	private Action getCompareAction() {
+		return new Action() {
 			public void run() {
 				IStructuredSelection selection = viewer.getStructuredSelection();
 				Object obj = selection.getFirstElement();
