@@ -5,17 +5,19 @@ import java.util.List;
 
 import org.eclipse.jface.viewers.TableViewer;
 
+import hvl.plugin.parmorel.views.CompareModelView;
+import hvl.plugin.parmorel.views.RepairSelectorView;
 import hvl.projectparmorel.modelrepair.Solution;
 
 public enum PossibleSolutions {
 	INSTANCE;
 
 	private List<Solution> solutions;
-	private TableViewer viewer;
+	private RepairSelectorView view;
 	
 	private PossibleSolutions() {
 		solutions = new ArrayList<>();
-		viewer = null;
+		view = null;
 	}
 	
 	public List<Solution> getSolutions(){
@@ -27,12 +29,12 @@ public enum PossibleSolutions {
 		for(Solution solution : updatedSolutions) {
 			solutions.add(solution);
 		}
-		if(viewer != null) {
-			viewer.refresh();
+		if(view != null) {
+			view.updateSolutions(updatedSolutions);
 		}
 	}
 	
-	public void setViewer(TableViewer viewer) {
-		this.viewer = viewer;
+	public void setViewer(RepairSelectorView view) {
+		this.view = view;
 	}
 }

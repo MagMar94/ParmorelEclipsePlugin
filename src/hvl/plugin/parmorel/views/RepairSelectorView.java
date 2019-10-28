@@ -13,6 +13,9 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.*;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.SWT;
+
+import java.util.List;
+
 import javax.inject.Inject;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
@@ -48,6 +51,8 @@ public class RepairSelectorView extends ViewPart {
 	private TableViewer viewer;
 	private Action action1;
 	private Action doubleClickAction;
+	
+	private Button compareButton;
 
 	class ViewLabelProvider extends LabelProvider implements ITableLabelProvider {
 		@Override
@@ -81,10 +86,11 @@ public class RepairSelectorView extends ViewPart {
 		Composite buttonGroup = new Composite(parent, SWT.NONE);
 		RowLayout rl_buttonGroup = new RowLayout(SWT.HORIZONTAL);
 		buttonGroup.setLayout(rl_buttonGroup);
-
-		Button compareButton = new Button(buttonGroup, SWT.RIGHT);
+	
+		compareButton = new Button(buttonGroup, SWT.RIGHT);
 		compareButton.setText("Compare solution");
-
+		compareButton.setEnabled(false);
+		
 		Button selectButton = new Button(buttonGroup, SWT.NONE);
 		selectButton.setAlignment(SWT.LEFT);
 		selectButton.setText("Repair with selected solution");
@@ -99,7 +105,7 @@ public class RepairSelectorView extends ViewPart {
 		
 		viewer.setContentProvider(new ArrayContentProvider());
 		viewer.setInput(PossibleSolutions.INSTANCE.getSolutions());
-		PossibleSolutions.INSTANCE.setViewer(viewer);
+		PossibleSolutions.INSTANCE.setViewer(this);
 		viewer.setLabelProvider(new ViewLabelProvider());
 		
 		getSite().setSelectionProvider(viewer);
@@ -179,5 +185,16 @@ public class RepairSelectorView extends ViewPart {
 	@Override
 	public void setFocus() {
 		viewer.getControl().setFocus();
+	}
+
+	public void updateSolutions(List<Solution> updatedSolutions) {
+		viewer.refresh();
+		if(updatedSolutions.isEmpty()) {
+			compareButton.setEnabled(false);
+		} else {
+			compareButton.setEnabled(true);
+		}
+		// TODO Auto-generated method stub
+		
 	}
 }
