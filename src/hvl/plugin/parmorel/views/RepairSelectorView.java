@@ -4,6 +4,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.*;
 
 import hvl.plugin.parmorel.actions.CompareAction;
+import hvl.plugin.parmorel.actions.RepairWithSelectedFile;
 import hvl.plugin.parmorel.model.PossibleSolutions;
 import hvl.projectparmorel.modelrepair.Solution;
 
@@ -102,6 +103,13 @@ public class RepairSelectorView extends ViewPart {
 		compareButton.setEnabled(false);
 		
 		Button selectButton = new Button(buttonGroup, SWT.NONE);
+		selectButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseUp(MouseEvent e) {
+				RepairWithSelectedFile repairTool = new RepairWithSelectedFile(viewer);
+				repairTool.fixModelWithSelectedSolution();
+			}
+		});
 		selectButton.setAlignment(SWT.LEFT);
 		selectButton.setText("Repair with selected solution");
 		makeActions();
