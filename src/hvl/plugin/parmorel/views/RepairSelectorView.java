@@ -131,8 +131,8 @@ public class RepairSelectorView extends ViewPart {
 	
 	private void createColumnsFor(TableViewer viewer2) {
 		TableViewerColumn colSolutionNumber = new TableViewerColumn(viewer, SWT.NONE);
-		colSolutionNumber.getColumn().setWidth(100);
-		colSolutionNumber.getColumn().setText("Solution number");
+		colSolutionNumber.getColumn().setWidth(30);
+		colSolutionNumber.getColumn().setText("#");
 		colSolutionNumber.getColumn().setAlignment(SWT.RIGHT);
 		solutionNumberColumnLabelProvider = new SolutionNumberColumnLabelProvider();
 		colSolutionNumber.setLabelProvider(solutionNumberColumnLabelProvider);
