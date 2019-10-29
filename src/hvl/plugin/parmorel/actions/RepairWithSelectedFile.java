@@ -30,7 +30,7 @@ public class RepairWithSelectedFile {
 	}
 	
 	private void showMessage(String message) {
-		MessageDialog.openInformation(viewer.getControl().getShell(), "Select solution", message);
+		MessageDialog.openInformation(viewer.getControl().getShell(), "Repairing status", message);
 	}
 	
 	private void copyFileContent(File fileToBeFixed, File solutionFile) {
