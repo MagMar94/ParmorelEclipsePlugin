@@ -46,7 +46,8 @@ public class RepairWithSelectedFile {
 				line = reader.readLine();
 			}
 			writer.close();
-			reader.close();			
+			reader.close();		
+			showMessage("Model repaired with chosen solution.");
 		} catch (IOException e) {
 			showMessage("An error occurred.");
 		}

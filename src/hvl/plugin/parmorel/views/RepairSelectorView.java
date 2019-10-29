@@ -58,6 +58,7 @@ public class RepairSelectorView extends ViewPart {
 	private SolutionNumberColumnLabelProvider solutionNumberColumnLabelProvider; 
 	
 	private Button compareButton;
+	private Button repairWithSelectedButton;
 
 	class ViewLabelProvider extends LabelProvider implements ITableLabelProvider {
 		@Override
@@ -102,16 +103,18 @@ public class RepairSelectorView extends ViewPart {
 		compareButton.setText("Compare solution");
 		compareButton.setEnabled(false);
 		
-		Button selectButton = new Button(buttonGroup, SWT.NONE);
-		selectButton.addMouseListener(new MouseAdapter() {
+		repairWithSelectedButton = new Button(buttonGroup, SWT.NONE);
+		repairWithSelectedButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseUp(MouseEvent e) {
 				RepairWithSelectedFile repairTool = new RepairWithSelectedFile(viewer);
 				repairTool.fixModelWithSelectedSolution();
+				repairWithSelectedButton.setEnabled(false);
 			}
 		});
-		selectButton.setAlignment(SWT.LEFT);
-		selectButton.setText("Repair with selected solution");
+		repairWithSelectedButton.setAlignment(SWT.LEFT);
+		repairWithSelectedButton.setText("Repair with selected solution");
+		repairWithSelectedButton.setEnabled(false);
 		makeActions();
 		hookContextMenu();
 		hookDoubleClickAction();
@@ -220,8 +223,10 @@ public class RepairSelectorView extends ViewPart {
 		viewer.refresh();
 		if(updatedSolutions.isEmpty()) {
 			compareButton.setEnabled(false);
+			repairWithSelectedButton.setEnabled(false);
 		} else {
 			compareButton.setEnabled(true);
+			repairWithSelectedButton.setEnabled(true);
 		}
 	}
 }
