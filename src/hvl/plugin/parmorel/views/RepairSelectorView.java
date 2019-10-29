@@ -12,6 +12,7 @@ import org.eclipse.jface.action.*;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.*;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.SWT;
 
 import java.util.List;
@@ -106,6 +107,11 @@ public class RepairSelectorView extends ViewPart {
 		
 		createColumnsFor(viewer);
 		
+		// make lines and header visible
+		final Table table = viewer.getTable();
+		table.setHeaderVisible(true);
+		table.setLinesVisible(true);
+		
 		viewer.setContentProvider(new ArrayContentProvider());
 		viewer.setInput(PossibleSolutions.INSTANCE.getSolutions());
 		PossibleSolutions.INSTANCE.setViewer(this);
@@ -117,8 +123,9 @@ public class RepairSelectorView extends ViewPart {
 	
 	private void createColumnsFor(TableViewer viewer2) {
 		TableViewerColumn colFirstName = new TableViewerColumn(viewer, SWT.NONE);
-		colFirstName.getColumn().setWidth(200);
-		colFirstName.getColumn().setText("Solution");
+		colFirstName.getColumn().setWidth(100);
+		colFirstName.getColumn().setText("Solution number");
+		colFirstName.getColumn().setAlignment(SWT.RIGHT);
 		solutionNumberColumnLabelProvider = new SolutionNumberColumnLabelProvider();
 		colFirstName.setLabelProvider(solutionNumberColumnLabelProvider);
 	}
