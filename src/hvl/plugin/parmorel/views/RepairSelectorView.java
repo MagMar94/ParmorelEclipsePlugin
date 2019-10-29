@@ -52,7 +52,7 @@ public class RepairSelectorView extends ViewPart {
 	IWorkbench workbench;
 
 	private TableViewer viewer;
-	private Action action1;
+	private Action compareAction;
 	private Action doubleClickAction;
 	private SolutionNumberColumnLabelProvider solutionNumberColumnLabelProvider; 
 	
@@ -95,7 +95,7 @@ public class RepairSelectorView extends ViewPart {
 		compareButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseUp(MouseEvent e) {
-				new CompareAction(viewer).run();
+				compareAction.run();
 			}
 		});
 		compareButton.setText("Compare solution");
@@ -168,25 +168,25 @@ public class RepairSelectorView extends ViewPart {
 	}
 
 	private void fillLocalPullDown(IMenuManager manager) {
-		manager.add(action1);
+		manager.add(compareAction);
 		manager.add(new Separator());
 	}
 
 	private void fillContextMenu(IMenuManager manager) {
-		manager.add(action1);
+		manager.add(compareAction);
 		// Other plug-ins can contribute there actions here
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
 
 	private void fillLocalToolBar(IToolBarManager manager) {
-		manager.add(action1);
+		manager.add(compareAction);
 	}
 
 	private void makeActions() {
-		action1 = new CompareAction(viewer);
-		action1.setText("Compare");
-		action1.setToolTipText("Compare the solution with the original.");
-		action1.setImageDescriptor(
+		compareAction = new CompareAction(viewer);
+		compareAction.setText("Compare");
+		compareAction.setToolTipText("Compare the solution with the original.");
+		compareAction.setImageDescriptor(
 				null);
 
 		doubleClickAction = new CompareAction(viewer);
