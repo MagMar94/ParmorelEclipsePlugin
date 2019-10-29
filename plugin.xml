@@ -57,7 +57,7 @@
          point="org.eclipse.ui.views">
       <view
             allowMultiple="false"
-            category="hvl.plugin.parmorel.morelrepair"
+            category="hvl.plugin.parmorel.modelrepair"
             class="hvl.plugin.parmorel.views.ModelRepairView"
             icon="icons/parmorel.png"
             id="hvl.plugin.parmorel.views.ModelRepairView"
@@ -65,9 +65,35 @@
             restorable="true">
       </view>
       <category
-            id="hvl.plugin.parmorel.morelrepair"
+            id="hvl.plugin.parmorel.modelrepair"
             name="Model Repair">
       </category>
+      <view
+            category="hvl.plugin.parmorel.modelrepair"
+            class="hvl.plugin.parmorel.views.RepairSelectorView"
+            icon="icons/parmorel.png"
+            id="hvl.plugin.parmorel.views.RepairSelectorView"
+            inject="true"
+            name="Select solution">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.jdt.ui.JavaPerspective">
+         <view
+               id="hvl.plugin.parmorel.views.RepairSelectorView"
+               ratio="0.5"
+               relationship="right"
+               relative="org.eclipse.ui.views.ProblemView">
+         </view>
+      </perspectiveExtension>
+   </extension>
+   <extension
+         point="org.eclipse.help.contexts">
+      <contexts
+            file="contexts.xml">
+      </contexts>
    </extension>
 
 </plugin>

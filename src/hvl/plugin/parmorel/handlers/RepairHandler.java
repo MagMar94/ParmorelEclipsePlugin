@@ -1,48 +1,29 @@
 package hvl.plugin.parmorel.handlers;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.compare.CompareConfiguration;
-import org.eclipse.compare.CompareEditorInput;
-import org.eclipse.compare.CompareUI;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.compare.Comparison;
-import org.eclipse.emf.compare.EMFCompare;
-import org.eclipse.emf.compare.domain.ICompareEditingDomain;
-import org.eclipse.emf.compare.domain.impl.EMFCompareEditingDomain;
-import org.eclipse.emf.compare.ide.ui.internal.configuration.EMFCompareConfiguration;
-import org.eclipse.emf.compare.ide.ui.internal.editor.ComparisonEditorInput;
-import org.eclipse.emf.compare.scope.DefaultComparisonScope;
-import org.eclipse.emf.compare.scope.IComparisonScope;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ListSelectionDialog;
 
-import hvl.projectparmorel.ml.ModelFixer;
-import hvl.projectparmorel.ml.QModelFixer;
+import hvl.plugin.parmorel.model.ParmorelModelFixer;
+import hvl.projectparmorel.modelrepair.Solution;
 
-@SuppressWarnings("restriction")
 public class RepairHandler implements IHandler {
+	public final ParmorelModelFixer modelFixer;
 
 	private String shorterSequences = "Prefer shorter sequences of actions";
 	private String longerSequences = "Prefer longer sequences of actions";
@@ -52,11 +33,11 @@ public class RepairHandler implements IHandler {
 	private String punishModification = "Punish modification of the original model";
 	private String punishDeletion = "Punish deletion";
 
-	private ModelFixer modelFixer;
+	
 	private boolean isHandled;
 
 	public RepairHandler() {
-		modelFixer = new QModelFixer();
+		modelFixer = new ParmorelModelFixer();
 		isHandled = false;
 	}
 
@@ -96,25 +77,17 @@ public class RepairHandler implements IHandler {
 		return null;
 	}
 
-	/**
-	 * Fixes the selected model with the specified preferences.
-	 * 
-	 * @param preferences
-	 */
-	private void fixSelectedModelWith(List<Integer> preferences) {
-		modelFixer.setPreferences(preferences);
-
-		File file = getSelectedFile();
-		file = new File("/Users/Magnus/Skole/DAT300/EclipseWorkspace/ParmorelRunnable/mutants/b10.ecore");
-		File destinationFile = createDuplicateFileFrom(file);
-		URI uri = URI.createFileURI(destinationFile.getAbsolutePath());
-		Resource model = modelFixer.getModel(uri);
-		
-		modelFixer.fixModel(model, uri);
-
-		compare(file, destinationFile);
+	private List<Solution> fixSelectedModelWith(List<Integer> preferences) {
+		File model = getSelectedFile();
+		List<Solution> possibleSolutions = modelFixer.fixModel(model, preferences);
+		try {
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView("hvl.plugin.parmorel.views.RepairSelectorView");
+		} catch (PartInitException e) {
+			e.printStackTrace();
+		}
+		return possibleSolutions;
 	}
-	
+
 	private File getSelectedFile() {
 		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 		if (window != null) {
@@ -128,21 +101,7 @@ public class RepairHandler implements IHandler {
 		return null;
 	}
 	
-	/**
-	 * Takes the selected file and creates a duplicate of the file that will
-	 * represent the repaired model.
-	 * 
-	 * @return the created duplicate
-	 */
-	private File createDuplicateFileFrom(File original) {
-		File destinationFile = new File(original.getParent() + "_temp_" + original.getName());
-		try {
-			Files.copy(original.toPath(), destinationFile.toPath());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return destinationFile;
-	}
+
 
 	private List<Integer> getPreferencesFrom(String[] stringPreferences) {
 		List<Integer> preferences = new ArrayList<>();
@@ -169,46 +128,6 @@ public class RepairHandler implements IHandler {
 		if (preferenceAsString.equals(punishDeletion))
 			return 4;
 		return -1;
-	}
-
-	
-
-	/**
-	 * Compares to models.
-	 * 
-	 * @see <a href=
-	 *      "https://wiki.eclipse.org/EMF_Compare/How_To_Open_Compare_Dialog_With_Comparison">Documentation
-	 *      on EMF Compare</a> Both are available from the
-	 *      org.eclipse.emf.compare.ide.ui plug-in, in the package
-	 *      org.eclipse.emf.compare.ide.ui.internal.editor. This is still
-	 *      provisional API so we may break it any time.
-	 * 
-	 * @param model1
-	 * @param model2
-	 */
-	private void compare(File model1, File model2) {
-		URI uri1 = URI.createFileURI(model1.getAbsolutePath());
-		URI uri2 = URI.createFileURI(model2.getAbsolutePath());
-
-		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("ecore", new EcoreResourceFactoryImpl());
-
-		ResourceSet resourceSet1 = new ResourceSetImpl();
-		ResourceSet resourceSet2 = new ResourceSetImpl();
-
-		resourceSet1.getResource(uri1, true);
-		resourceSet2.getResource(uri2, true);
-
-		IComparisonScope scope = new DefaultComparisonScope(resourceSet1, resourceSet2, null);
-		Comparison comparison = EMFCompare.builder().build().compare(scope);
-
-		ICompareEditingDomain editingDomain = EMFCompareEditingDomain.create(resourceSet1, resourceSet2, null);
-		AdapterFactory adapterFactory = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
-
-		CompareConfiguration configuration = new CompareConfiguration();
-		CompareEditorInput input = new ComparisonEditorInput(new EMFCompareConfiguration(configuration), comparison,
-				editingDomain, adapterFactory);
-
-		CompareUI.openCompareDialog(input);
 	}
 
 	@Override
