@@ -1,11 +1,9 @@
 package hvl.plugin.parmorel.actions;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -37,19 +35,10 @@ public class RepairWithSelectedFile {
 	
 	private void copyFileContent(File fileToBeFixed, File solutionFile) {
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader(solutionFile));
-			BufferedWriter writer = new BufferedWriter(new FileWriter(fileToBeFixed, false));
-			String line = reader.readLine();
-			while(line != null) {
-				writer.write(line);
-				writer.newLine();
-				line = reader.readLine();
-			}
-			writer.close();
-			reader.close();		
+			Files.copy(solutionFile.toPath(), fileToBeFixed.toPath(), StandardCopyOption.REPLACE_EXISTING);
 			showMessage("Model repaired with chosen solution.");
 		} catch (IOException e) {
-			showMessage("An error occurred.");
+			showMessage("An error occurred: " + e.getMessage());
 		}
 	}
 }
