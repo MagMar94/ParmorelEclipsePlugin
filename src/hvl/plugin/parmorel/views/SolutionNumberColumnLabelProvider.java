@@ -15,15 +15,6 @@ public class SolutionNumberColumnLabelProvider extends ColumnLabelProvider {
 		return Integer.toString(id++);
 	}
 
-//	public ColumnLabelProvider getFirstColumnLabelProvider() {
-//		return new ColumnLabelProvider() {
-//			@Override
-//			public String getText(Object element) {
-//				return Integer.toString(id++);
-//			}
-//		};
-//	}
-
 	public void resetCounter() {
 		id = 1;
 	}

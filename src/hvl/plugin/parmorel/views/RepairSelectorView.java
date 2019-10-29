@@ -122,12 +122,17 @@ public class RepairSelectorView extends ViewPart {
 	}
 	
 	private void createColumnsFor(TableViewer viewer2) {
-		TableViewerColumn colFirstName = new TableViewerColumn(viewer, SWT.NONE);
-		colFirstName.getColumn().setWidth(100);
-		colFirstName.getColumn().setText("Solution number");
-		colFirstName.getColumn().setAlignment(SWT.RIGHT);
+		TableViewerColumn colSolutionNumber = new TableViewerColumn(viewer, SWT.NONE);
+		colSolutionNumber.getColumn().setWidth(100);
+		colSolutionNumber.getColumn().setText("Solution number");
+		colSolutionNumber.getColumn().setAlignment(SWT.RIGHT);
 		solutionNumberColumnLabelProvider = new SolutionNumberColumnLabelProvider();
-		colFirstName.setLabelProvider(solutionNumberColumnLabelProvider);
+		colSolutionNumber.setLabelProvider(solutionNumberColumnLabelProvider);
+		
+		TableViewerColumn colWeight = new TableViewerColumn(viewer, SWT.NONE);
+		colWeight.getColumn().setWidth(100);
+		colWeight.getColumn().setText("Weight");
+		colWeight.setLabelProvider(new WeightColumnLabelProvider());
 	}
 
 	private void hookContextMenu() {
