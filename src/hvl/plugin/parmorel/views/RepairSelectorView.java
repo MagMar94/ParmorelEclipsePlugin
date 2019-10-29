@@ -3,13 +3,13 @@ package hvl.plugin.parmorel.views;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.*;
 
+import hvl.plugin.parmorel.actions.CompareAction;
 import hvl.plugin.parmorel.model.PossibleSolutions;
 import hvl.projectparmorel.modelrepair.Solution;
 
 import org.eclipse.jface.viewers.*;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.jface.action.*;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.*;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
@@ -21,6 +21,8 @@ import javax.inject.Inject;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 
 /**
  * This sample class demonstrates how to plug-in a new workbench view. The view
@@ -90,6 +92,12 @@ public class RepairSelectorView extends ViewPart {
 		buttonGroup.setLayout(rl_buttonGroup);
 	
 		compareButton = new Button(buttonGroup, SWT.RIGHT);
+		compareButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseUp(MouseEvent e) {
+				new CompareAction(viewer).run();
+			}
+		});
 		compareButton.setText("Compare solution");
 		compareButton.setEnabled(false);
 		
@@ -175,30 +183,15 @@ public class RepairSelectorView extends ViewPart {
 	}
 
 	private void makeActions() {
-		action1 = getCompareAction();
+		action1 = new CompareAction(viewer);
 		action1.setText("Compare");
 		action1.setToolTipText("Compare the solution with the original.");
 		action1.setImageDescriptor(
 				null);
 
-		doubleClickAction = getCompareAction();
+		doubleClickAction = new CompareAction(viewer);
 	}
 	
-	private Action getCompareAction() {
-		return new Action() {
-			public void run() {
-				IStructuredSelection selection = viewer.getStructuredSelection();
-				Object obj = selection.getFirstElement();
-				if(obj instanceof Solution) {
-					Solution solution = (Solution) obj;
-					CompareModelView.compare(solution.getOriginal(), solution.getModel());
-				} else {
-					showMessage("An error occured when retrieving the solution.");
-				}
-			}
-		};
-	}
-
 	private void hookDoubleClickAction() {
 		viewer.addDoubleClickListener(new IDoubleClickListener() {
 			public void doubleClick(DoubleClickEvent event) {
@@ -207,9 +200,7 @@ public class RepairSelectorView extends ViewPart {
 		});
 	}
 
-	private void showMessage(String message) {
-		MessageDialog.openInformation(viewer.getControl().getShell(), "Select solution", message);
-	}
+	
 
 	@Override
 	public void setFocus() {
