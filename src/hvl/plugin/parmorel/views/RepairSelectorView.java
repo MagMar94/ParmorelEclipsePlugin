@@ -51,6 +51,7 @@ public class RepairSelectorView extends ViewPart {
 	private TableViewer viewer;
 	private Action action1;
 	private Action doubleClickAction;
+	private SolutionNumberColumnLabelProvider solutionNumberColumnLabelProvider; 
 	
 	private Button compareButton;
 
@@ -103,12 +104,23 @@ public class RepairSelectorView extends ViewPart {
 	private void createViewer(Composite parent) {
 		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);	
 		
+		createColumnsFor(viewer);
+		
 		viewer.setContentProvider(new ArrayContentProvider());
 		viewer.setInput(PossibleSolutions.INSTANCE.getSolutions());
 		PossibleSolutions.INSTANCE.setViewer(this);
-		viewer.setLabelProvider(new ViewLabelProvider());
+		
+//		viewer.setLabelProvider(new ViewLabelProvider());
 		
 		getSite().setSelectionProvider(viewer);
+	}
+	
+	private void createColumnsFor(TableViewer viewer2) {
+		TableViewerColumn colFirstName = new TableViewerColumn(viewer, SWT.NONE);
+		colFirstName.getColumn().setWidth(200);
+		colFirstName.getColumn().setText("Solution");
+		solutionNumberColumnLabelProvider = new SolutionNumberColumnLabelProvider();
+		colFirstName.setLabelProvider(solutionNumberColumnLabelProvider);
 	}
 
 	private void hookContextMenu() {
@@ -188,13 +200,12 @@ public class RepairSelectorView extends ViewPart {
 	}
 
 	public void updateSolutions(List<Solution> updatedSolutions) {
+		solutionNumberColumnLabelProvider.resetCounter();
 		viewer.refresh();
 		if(updatedSolutions.isEmpty()) {
 			compareButton.setEnabled(false);
 		} else {
 			compareButton.setEnabled(true);
 		}
-		// TODO Auto-generated method stub
-		
 	}
 }

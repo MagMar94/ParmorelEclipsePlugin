@@ -3,9 +3,6 @@ package hvl.plugin.parmorel.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.jface.viewers.TableViewer;
-
-import hvl.plugin.parmorel.views.CompareModelView;
 import hvl.plugin.parmorel.views.RepairSelectorView;
 import hvl.projectparmorel.modelrepair.Solution;
 
