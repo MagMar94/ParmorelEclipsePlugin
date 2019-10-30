@@ -11,6 +11,7 @@ import hvl.projectparmorel.modelrepair.Solution;
 public class CompareAction extends Action {
 	
 	private StructuredViewer viewer;
+	private final String POP_UP_HEADLINE = "Compare";
 	
 	public CompareAction(StructuredViewer viewer) {
 		this.viewer = viewer;
@@ -24,11 +25,11 @@ public class CompareAction extends Action {
 			Solution solution = (Solution) obj;
 			CompareModelView.compare(solution.getOriginal(), solution.getModel());
 		} else {
-			showMessage("An error occured when retrieving the solution.");
+			showError("An error occured when retrieving the solution.");
 		}
 	}
 	
-	private void showMessage(String message) {
-		MessageDialog.openInformation(viewer.getControl().getShell(), "Select solution", message);
+	private void showError(String message) {
+		MessageDialog.openError(viewer.getControl().getShell(), POP_UP_HEADLINE, message);
 	}
 }
