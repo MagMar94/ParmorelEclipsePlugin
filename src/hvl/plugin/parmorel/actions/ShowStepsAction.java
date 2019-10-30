@@ -9,6 +9,7 @@ import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+import hvl.plugin.parmorel.dialogs.ShowStepsDialog;
 import hvl.projectparmorel.modelrepair.AppliedAction;
 import hvl.projectparmorel.modelrepair.Solution;
 
@@ -36,19 +37,8 @@ public class ShowStepsAction extends Action {
 	}
 
 	private void displaySteps(List<AppliedAction> steps) {
-		Display display = new Display ();
-		Shell shell = new Shell (display);
-		shell.setText ("Shell");
-		shell.setSize (200, 200);
-		shell.open ();
-		Shell dialog = new Shell (shell);
-		dialog.setText ("Dialog");
-		dialog.setSize (200, 200);
-		dialog.open ();
-		while (!shell.isDisposed ()) {
-			if (!display.readAndDispatch ()) display.sleep ();
-		}
-		display.dispose ();
+		ShowStepsDialog dialog = new ShowStepsDialog(viewer.getControl().getShell(), steps);
+		dialog.open();
 	}
 	
 //	private void showMessage(String message) {
