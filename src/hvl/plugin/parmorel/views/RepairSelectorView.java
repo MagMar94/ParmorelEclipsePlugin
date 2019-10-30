@@ -5,6 +5,7 @@ import org.eclipse.ui.part.*;
 
 import hvl.plugin.parmorel.actions.CompareAction;
 import hvl.plugin.parmorel.actions.RepairWithSelectedFile;
+import hvl.plugin.parmorel.actions.ShowStepsAction;
 import hvl.plugin.parmorel.model.PossibleSolutions;
 import hvl.projectparmorel.modelrepair.Solution;
 
@@ -54,6 +55,7 @@ public class RepairSelectorView extends ViewPart {
 
 	private TableViewer viewer;
 	private Action compareAction;
+	private Action showStepsAction;
 	private Action doubleClickAction;
 	private SolutionNumberColumnLabelProvider solutionNumberColumnLabelProvider; 
 	
@@ -180,26 +182,33 @@ public class RepairSelectorView extends ViewPart {
 
 	private void fillLocalPullDown(IMenuManager manager) {
 		manager.add(compareAction);
+		manager.add(showStepsAction);
 		manager.add(new Separator());
 	}
 
 	private void fillContextMenu(IMenuManager manager) {
 		manager.add(compareAction);
+		manager.add(showStepsAction);
 		// Other plug-ins can contribute there actions here
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
 
 	private void fillLocalToolBar(IToolBarManager manager) {
 		manager.add(compareAction);
+		manager.add(showStepsAction);
 	}
 
 	private void makeActions() {
 		compareAction = new CompareAction(viewer);
 		compareAction.setText("Compare");
 		compareAction.setToolTipText("Compare the solution with the original.");
-		compareAction.setImageDescriptor(
-				null);
-
+		compareAction.setImageDescriptor(null);
+		
+		showStepsAction = new ShowStepsAction();
+		showStepsAction.setText("Show steps");
+		showStepsAction.setToolTipText("See the actions taken to produce the solution.");
+		showStepsAction.setImageDescriptor(null);
+		
 		doubleClickAction = new CompareAction(viewer);
 	}
 	
