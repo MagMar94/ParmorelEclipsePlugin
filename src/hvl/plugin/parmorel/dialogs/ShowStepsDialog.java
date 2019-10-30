@@ -3,20 +3,27 @@ package hvl.plugin.parmorel.dialogs;
 import java.util.List;
 
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
+import hvl.plugin.parmorel.views.ActionDescriprionLabelProvider;
+import hvl.plugin.parmorel.views.ErrorDescriptionLabelProvider;
+import hvl.plugin.parmorel.views.SolutionNumberColumnLabelProvider;
+import hvl.plugin.parmorel.views.WeightColumnLabelProvider;
 import hvl.projectparmorel.modelrepair.AppliedAction;
+import org.eclipse.swt.widgets.Table;
 
 public class ShowStepsDialog extends Dialog  {
 	private List<AppliedAction> steps;
+//	private Table table;
+	private TableViewer viewer;
 	
 	public ShowStepsDialog(Shell parentShell, List<AppliedAction> steps) {
 		super(parentShell);
@@ -26,19 +33,44 @@ public class ShowStepsDialog extends Dialog  {
     @Override
     protected Control createDialogArea(Composite parent) {
         Composite container = (Composite) super.createDialogArea(parent);
-        Button button = new Button(container, SWT.PUSH);
-        button.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false,
-                false));
-        button.setText("Press me");
-        button.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                System.out.println("Pressed");
-            }
-        });
+        
+        viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);	
+        
+        final Table table = viewer.getTable();
+        table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+        table.setHeaderVisible(true);
+        table.setLinesVisible(true);
+        
+        createColumnsFor(viewer);
+        
+        viewer.setContentProvider(new ArrayContentProvider());
+        viewer.setInput(steps);
 
         return container;
     }
+    
+    private void createColumnsFor(TableViewer viewer) {
+		TableViewerColumn col = new TableViewerColumn(viewer, SWT.NONE);
+		col.getColumn().setWidth(30);
+		col.getColumn().setText("#");
+		col.getColumn().setAlignment(SWT.RIGHT);
+		col.setLabelProvider(new SolutionNumberColumnLabelProvider());
+		
+		TableViewerColumn colWeight = new TableViewerColumn(viewer, SWT.NONE);
+		colWeight.getColumn().setWidth(70);
+		colWeight.getColumn().setText("Weight");
+		colWeight.setLabelProvider(new WeightColumnLabelProvider());
+		
+		TableViewerColumn colChosenAction = new TableViewerColumn(viewer, SWT.NONE);
+		colChosenAction.getColumn().setWidth(130);
+		colChosenAction.getColumn().setText("Action");
+		colChosenAction.setLabelProvider(new ActionDescriprionLabelProvider());
+		
+		TableViewerColumn colErrorDescription = new TableViewerColumn(viewer, SWT.NONE);
+		colErrorDescription.getColumn().setWidth(500);
+		colErrorDescription.getColumn().setText("Description of error");
+		colErrorDescription.setLabelProvider(new ErrorDescriptionLabelProvider());
+	}
 
     @Override
     protected void configureShell(Shell newShell) {
