@@ -5,11 +5,11 @@ import org.eclipse.ui.part.*;
 
 import hvl.plugin.parmorel.actions.CompareAction;
 import hvl.plugin.parmorel.actions.RepairWithSelectedFile;
+import hvl.plugin.parmorel.actions.ShowStepsAction;
 import hvl.plugin.parmorel.model.PossibleSolutions;
 import hvl.projectparmorel.modelrepair.Solution;
 
 import org.eclipse.jface.viewers.*;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.jface.action.*;
 import org.eclipse.ui.*;
 import org.eclipse.swt.widgets.Menu;
@@ -54,31 +54,12 @@ public class RepairSelectorView extends ViewPart {
 
 	private TableViewer viewer;
 	private Action compareAction;
+	private Action showStepsAction;
 	private Action doubleClickAction;
 	private SolutionNumberColumnLabelProvider solutionNumberColumnLabelProvider; 
 	
 	private Button compareButton;
 	private Button repairWithSelectedButton;
-
-	class ViewLabelProvider extends LabelProvider implements ITableLabelProvider {
-		@Override
-		public String getColumnText(Object obj, int index) {
-			String txt = getText(obj);
-			if (txt.equals(""))
-				txt = "a";
-			return getText(obj);
-		}
-
-		@Override
-		public Image getColumnImage(Object obj, int index) {
-			return getImage(obj);
-		}
-
-		@Override
-		public Image getImage(Object obj) {
-			return workbench.getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT);
-		}
-	}
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -180,26 +161,33 @@ public class RepairSelectorView extends ViewPart {
 
 	private void fillLocalPullDown(IMenuManager manager) {
 		manager.add(compareAction);
+		manager.add(showStepsAction);
 		manager.add(new Separator());
 	}
 
 	private void fillContextMenu(IMenuManager manager) {
 		manager.add(compareAction);
+		manager.add(showStepsAction);
 		// Other plug-ins can contribute there actions here
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
 
 	private void fillLocalToolBar(IToolBarManager manager) {
 		manager.add(compareAction);
+		manager.add(showStepsAction);
 	}
 
 	private void makeActions() {
 		compareAction = new CompareAction(viewer);
 		compareAction.setText("Compare");
 		compareAction.setToolTipText("Compare the solution with the original.");
-		compareAction.setImageDescriptor(
-				null);
-
+		compareAction.setImageDescriptor(null);
+		
+		showStepsAction = new ShowStepsAction(viewer);
+		showStepsAction.setText("Show steps");
+		showStepsAction.setToolTipText("See the actions taken to produce the solution.");
+		showStepsAction.setImageDescriptor(null);
+		
 		doubleClickAction = new CompareAction(viewer);
 	}
 	
