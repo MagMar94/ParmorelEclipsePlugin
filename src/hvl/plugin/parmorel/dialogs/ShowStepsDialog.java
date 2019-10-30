@@ -3,12 +3,14 @@ package hvl.plugin.parmorel.dialogs;
 import java.util.List;
 
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
@@ -68,6 +70,14 @@ public class ShowStepsDialog extends Dialog  {
 		colErrorDescription.getColumn().setText("Description of error");
 		colErrorDescription.setLabelProvider(new ErrorDescriptionLabelProvider());
 	}
+    
+    @Override
+    protected void createButtonsForButtonBar(Composite parent) {
+        super.createButtonsForButtonBar(parent);
+
+        Button cancelButton = getButton(IDialogConstants.CANCEL_ID);      
+        cancelButton.setVisible(false);;
+    }
 
     @Override
     protected void configureShell(Shell newShell) {
