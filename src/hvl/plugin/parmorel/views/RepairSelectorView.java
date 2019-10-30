@@ -204,7 +204,7 @@ public class RepairSelectorView extends ViewPart {
 		compareAction.setToolTipText("Compare the solution with the original.");
 		compareAction.setImageDescriptor(null);
 		
-		showStepsAction = new ShowStepsAction();
+		showStepsAction = new ShowStepsAction(viewer);
 		showStepsAction.setText("Show steps");
 		showStepsAction.setToolTipText("See the actions taken to produce the solution.");
 		showStepsAction.setImageDescriptor(null);

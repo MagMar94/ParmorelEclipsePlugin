@@ -16,6 +16,7 @@ public class CompareAction extends Action {
 		this.viewer = viewer;
 	}
 	
+	@Override
 	public void run() {
 		IStructuredSelection selection = viewer.getStructuredSelection();
 		Object obj = selection.getFirstElement();
@@ -30,20 +31,4 @@ public class CompareAction extends Action {
 	private void showMessage(String message) {
 		MessageDialog.openInformation(viewer.getControl().getShell(), "Select solution", message);
 	}
-	
-//	private Action getCompareAction() {
-//		return new Action() {
-//			public void run() {
-//				IStructuredSelection selection = viewer.getStructuredSelection();
-//				Object obj = selection.getFirstElement();
-//				if(obj instanceof Solution) {
-//					Solution solution = (Solution) obj;
-//					CompareModelView.compare(solution.getOriginal(), solution.getModel());
-//				} else {
-//					showMessage("An error occured when retrieving the solution.");
-//				}
-//			}
-//		};
-//	}
-
 }
