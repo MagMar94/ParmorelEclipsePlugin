@@ -67,7 +67,7 @@ public class ShowStepsDialog extends Dialog  {
 		colChosenAction.setLabelProvider(new ActionDescriprionLabelProvider());
 		
 		TableViewerColumn colErrorDescription = new TableViewerColumn(viewer, SWT.NONE);
-		colErrorDescription.getColumn().setWidth(500);
+		colErrorDescription.getColumn().setWidth(800);
 		colErrorDescription.getColumn().setText("Description of error");
 		colErrorDescription.setLabelProvider(new ErrorDescriptionLabelProvider());
 	}
@@ -80,7 +80,11 @@ public class ShowStepsDialog extends Dialog  {
 
     @Override
     protected Point getInitialSize() {
-        return new Point(450, 300);
+        return new Point(730, 300);
     }
 
+    @Override
+    protected boolean isResizable() {
+        return true;
+    }
 }
