@@ -22,7 +22,6 @@ import org.eclipse.swt.widgets.Table;
 
 public class ShowStepsDialog extends Dialog  {
 	private List<AppliedAction> steps;
-//	private Table table;
 	private TableViewer viewer;
 	
 	public ShowStepsDialog(Shell parentShell, List<AppliedAction> steps) {
@@ -32,8 +31,6 @@ public class ShowStepsDialog extends Dialog  {
 
     @Override
     protected Control createDialogArea(Composite parent) {
-        Composite container = (Composite) super.createDialogArea(parent);
-        
         viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);	
         
         final Table table = viewer.getTable();
@@ -46,7 +43,7 @@ public class ShowStepsDialog extends Dialog  {
         viewer.setContentProvider(new ArrayContentProvider());
         viewer.setInput(steps);
 
-        return container;
+        return viewer.getControl();
     }
     
     private void createColumnsFor(TableViewer viewer) {
