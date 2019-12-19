@@ -2,7 +2,7 @@ package hvl.plugin.parmorel.views;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 
-import hvl.projectparmorel.modelrepair.AppliedAction;
+import hvl.projectparmorel.general.AppliedAction;
 import hvl.projectparmorel.modelrepair.Solution;
 
 public class WeightColumnLabelProvider extends ColumnLabelProvider {
