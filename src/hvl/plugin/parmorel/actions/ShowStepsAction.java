@@ -7,7 +7,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredViewer;
 import hvl.plugin.parmorel.dialogs.ShowStepsDialog;
-import hvl.projectparmorel.modelrepair.AppliedAction;
+import hvl.projectparmorel.general.AppliedAction;
 import hvl.projectparmorel.modelrepair.Solution;
 
 public class ShowStepsAction extends Action {

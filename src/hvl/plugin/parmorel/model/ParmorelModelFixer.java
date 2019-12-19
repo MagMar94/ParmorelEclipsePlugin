@@ -4,8 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import hvl.projectparmorel.modelrepair.ModelFixer;
-import hvl.projectparmorel.modelrepair.QModelFixer;
+import hvl.projectparmorel.ecore.EcoreQModelFixer;
+import hvl.projectparmorel.general.ModelFixer;
 import hvl.projectparmorel.modelrepair.Solution;
 
 public class ParmorelModelFixer {
@@ -14,9 +14,8 @@ public class ParmorelModelFixer {
 	private ModelFixer modelFixer;
 	
 	public ParmorelModelFixer() {
-		modelFixer = new QModelFixer();
+		modelFixer = new EcoreQModelFixer();
 		possibleSolutions = new ArrayList<Solution>();
-		
 	}
 	
 	/**

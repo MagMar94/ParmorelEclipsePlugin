@@ -19,7 +19,8 @@ import hvl.plugin.parmorel.views.ActionDescriprionLabelProvider;
 import hvl.plugin.parmorel.views.ErrorDescriptionLabelProvider;
 import hvl.plugin.parmorel.views.SolutionNumberColumnLabelProvider;
 import hvl.plugin.parmorel.views.WeightColumnLabelProvider;
-import hvl.projectparmorel.modelrepair.AppliedAction;
+import hvl.projectparmorel.general.AppliedAction;
+
 import org.eclipse.swt.widgets.Table;
 
 public class ShowStepsDialog extends Dialog  {
