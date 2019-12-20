@@ -138,6 +138,11 @@ public class RepairSelectorView extends ViewPart {
 		colNumberOfActions.getColumn().setWidth(160);
 		colNumberOfActions.getColumn().setText("Number of actions applied");
 		colNumberOfActions.setLabelProvider(new NumberOfActionsAppliedColumnLabelProvider());
+		
+		TableViewerColumn colDistance = new TableViewerColumn(viewer, SWT.NONE);
+		colDistance.getColumn().setWidth(160);
+		colDistance.getColumn().setText("Distance");
+		colDistance.setLabelProvider(new NumberOfActionsAppliedColumnLabelProvider());
 	}
 
 	private void hookContextMenu() {
