@@ -30,7 +30,7 @@ public class RepairWithSelectedFile {
 		Object obj = selection.getFirstElement();
 		if (obj instanceof Solution) {
 			Solution solution = (Solution) obj;
-			solution.reward();
+			solution.reward(true);
 			copyFileContent(solution.getOriginal(), solution.getModel());
 		} else {
 			showError("An error occured when retrieving the solution.");
