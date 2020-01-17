@@ -142,7 +142,7 @@ public class RepairSelectorView extends ViewPart {
 		TableViewerColumn colDistance = new TableViewerColumn(viewer, SWT.NONE);
 		colDistance.getColumn().setWidth(160);
 		colDistance.getColumn().setText("Distance");
-		colDistance.setLabelProvider(new NumberOfActionsAppliedColumnLabelProvider());
+		colDistance.setLabelProvider(new DistanceLabelProvider());
 	}
 
 	private void hookContextMenu() {
