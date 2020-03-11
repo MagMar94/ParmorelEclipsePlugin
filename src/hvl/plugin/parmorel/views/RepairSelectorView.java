@@ -18,27 +18,12 @@ import org.eclipse.swt.SWT;
 
 import java.util.List;
 
-import javax.inject.Inject;
+//import javax.inject.Inject;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-
-/**
- * This sample class demonstrates how to plug-in a new workbench view. The view
- * shows data obtained from the model. The sample creates a dummy model on the
- * fly, but a real implementation would connect to the model available either in
- * this or another plug-in (e.g. the workspace). The view is connected to the
- * model using a content provider.
- * <p>
- * The view uses a label provider to define how model objects should be
- * presented in the view. Each view can present the same model objects using
- * different labels and icons, if needed. Alternatively, a single label provider
- * can be shared between views in order to ensure that objects of the same type
- * are presented in the same way everywhere.
- * <p>
- */
 
 public class RepairSelectorView extends ViewPart {
 	public RepairSelectorView() {
@@ -49,8 +34,8 @@ public class RepairSelectorView extends ViewPart {
 	 */
 	public static final String ID = "hvl.plugin.parmorel.views.RepairSelectorView";
 
-	@Inject
-	IWorkbench workbench;
+//	@Inject
+//	IWorkbench workbench;
 
 	private TableViewer viewer;
 	private Action compareAction;
@@ -68,7 +53,7 @@ public class RepairSelectorView extends ViewPart {
 		createViewer(parent);
 
 		// Create the help context id for the viewer's control
-		workbench.getHelpSystem().setHelp(viewer.getControl(), "hvl.plugin.parmorel.viewer");
+//		workbench.getHelpSystem().setHelp(viewer.getControl(), "hvl.plugin.parmorel.viewer");
 
 		Composite buttonGroup = new Composite(parent, SWT.NONE);
 		RowLayout rl_buttonGroup = new RowLayout(SWT.HORIZONTAL);
