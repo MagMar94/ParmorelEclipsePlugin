@@ -12,8 +12,15 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.compare;bundle-version="3.7.400",
  org.eclipse.emf.edit;bundle-version="2.14.0",
  org.eclipse.emf.compare.edit;bundle-version="4.3.1",
- org.eclipse.emf.compare.ide.ui;bundle-version="4.4.3"
+ org.eclipse.emf.compare.ide.ui;bundle-version="4.4.3",
+ org.eclipse.epsilon.common.dt;bundle-version="1.5.1",
+ org.eclipse.epsilon.ecl.engine;bundle-version="1.5.1",
+ org.eclipse.epsilon.emc.emf;bundle-version="1.5.1",
+ org.eclipse.epsilon.eol.engine;bundle-version="1.5.1",
+ org.eclipse.epsilon.eol.dt;bundle-version="1.5.1",
+ SimMetricTool;bundle-version="1.0.0"
 Automatic-Module-Name: hvl.plugin.parmorel
 Bundle-RequiredExecutionEnvironment: JavaSE-13
 Bundle-ClassPath: .,
  libs/swing2swt.jar
+Export-Package: org.epsilon.ecl.tools.textcomparison.simmetrics

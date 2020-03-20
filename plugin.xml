@@ -95,5 +95,12 @@
             file="contexts.xml">
       </contexts>
    </extension>
+   <extension
+         point="org.eclipse.epsilon.common.dt.tool">
+      <tool
+            class="org.epsilon.ecl.tools.textcomparison.simmetrics.SimMetricsTool"
+            defaultName="SimMetricsTool">
+      </tool>
+   </extension>
 
 </plugin>
