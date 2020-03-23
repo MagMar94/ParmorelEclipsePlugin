@@ -50,7 +50,7 @@ public class CompareModelView {
 
 		IComparisonScope scope = new DefaultComparisonScope(resourceSet1, resourceSet2, null);
 		Comparison comparison = EMFCompare.builder().build().compare(scope);
-
+		
 		ICompareEditingDomain editingDomain = EMFCompareEditingDomain.create(resourceSet1, resourceSet2, null);
 		AdapterFactory adapterFactory = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
 
