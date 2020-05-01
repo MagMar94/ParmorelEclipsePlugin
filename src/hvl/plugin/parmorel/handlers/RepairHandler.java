@@ -34,6 +34,7 @@ public class RepairHandler implements IHandler {
 	private String rewardModification = "Prefer modification of the original model";
 	private String punishModification = "Punish modification of the original model";
 	private String punishDeletion = "Punish deletion";
+	private String closestDistance = "Prefer close distance to original";
 
 	
 	private boolean isHandled;
@@ -60,7 +61,7 @@ public class RepairHandler implements IHandler {
 		isHandled = false;
 		Shell shell = new Shell();
 		String[] options = { shorterSequences, longerSequences, higherInContext, lowerInContext, rewardModification,
-				punishModification, punishDeletion };
+				punishModification, punishDeletion, closestDistance };
 		ListSelectionDialog dialog = new ListSelectionDialog(shell, options, ArrayContentProvider.getInstance(),
 				new LabelProvider(), "Preference options:");
 		dialog.setTitle("Select preferences");
@@ -133,6 +134,8 @@ public class RepairHandler implements IHandler {
 			return PreferenceOption.PUNISH_MODIFICATION_OF_MODEL;
 		if (preferenceAsString.equals(punishDeletion))
 			return PreferenceOption.PUNISH_DELETION;
+		if(preferenceAsString.equals(closestDistance))
+			return PreferenceOption.PREFER_CLOSE_DISTANCE_TO_ORIGINAL;
 		return null;
 	}
 
