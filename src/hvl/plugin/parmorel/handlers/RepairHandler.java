@@ -41,7 +41,6 @@ public class RepairHandler implements IHandler {
 	private String preferReuse = "Prefer reuse";
 	private String preferRelaxation = "Prefer relaxation";
 
-	
 	private boolean isHandled;
 
 	public RepairHandler() {
@@ -66,7 +65,8 @@ public class RepairHandler implements IHandler {
 		isHandled = false;
 		Shell shell = new Shell();
 		String[] options = { shorterSequences, longerSequences, higherInContext, lowerInContext, rewardModification,
-				punishModification, punishDeletion, closestDistance };
+				punishModification, punishDeletion, closestDistance, preferMaintainability, preferUnderstandability,
+				preferComplexity, preferReuse, preferRelaxation };
 		ListSelectionDialog dialog = new ListSelectionDialog(shell, options, ArrayContentProvider.getInstance(),
 				new LabelProvider(), "Preference options:");
 		dialog.setTitle("Select preferences");
@@ -93,7 +93,8 @@ public class RepairHandler implements IHandler {
 		File model = getSelectedFile();
 		List<QSolution> possibleSolutions = modelFixer.fixModel(model, preferences);
 		try {
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView("hvl.plugin.parmorel.views.RepairSelectorView");
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+					.showView("hvl.plugin.parmorel.views.RepairSelectorView");
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}
@@ -112,8 +113,6 @@ public class RepairHandler implements IHandler {
 		}
 		return null;
 	}
-	
-
 
 	private List<PreferenceOption> getPreferencesFrom(String[] stringPreferences) {
 		List<PreferenceOption> preferences = new ArrayList<>();
@@ -139,17 +138,17 @@ public class RepairHandler implements IHandler {
 			return PreferenceOption.PUNISH_MODIFICATION_OF_MODEL;
 		if (preferenceAsString.equals(punishDeletion))
 			return PreferenceOption.PUNISH_DELETION;
-		if(preferenceAsString.equals(closestDistance))
+		if (preferenceAsString.equals(closestDistance))
 			return PreferenceOption.PREFER_CLOSE_DISTANCE_TO_ORIGINAL;
-		if(preferenceAsString.equals(preferMaintainability)) 
+		if (preferenceAsString.equals(preferMaintainability))
 			return PreferenceOption.PREFER_MAINTAINABILITY;
-		if(preferenceAsString.equals(preferUnderstandability))
+		if (preferenceAsString.equals(preferUnderstandability))
 			return PreferenceOption.PREFER_UNDERSTANDABILITY;
-		if(preferenceAsString.equals(preferComplexity))
+		if (preferenceAsString.equals(preferComplexity))
 			return PreferenceOption.PREFER_COMPLEXITY;
-		if(preferenceAsString.equals(preferReuse))
+		if (preferenceAsString.equals(preferReuse))
 			return PreferenceOption.PREFER_REUSE;
-		if(preferenceAsString.equals(preferRelaxation))
+		if (preferenceAsString.equals(preferRelaxation))
 			return PreferenceOption.PREFER_RELAXATION;
 		return null;
 	}
