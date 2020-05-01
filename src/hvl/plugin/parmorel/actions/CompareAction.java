@@ -6,7 +6,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredViewer;
 
 import hvl.plugin.parmorel.views.CompareModelView;
-import hvl.projectparmorel.modelrepair.Solution;
+import hvl.projectparmorel.qlearning.QSolution;
 
 public class CompareAction extends Action {
 	
@@ -21,8 +21,8 @@ public class CompareAction extends Action {
 	public void run() {
 		IStructuredSelection selection = viewer.getStructuredSelection();
 		Object obj = selection.getFirstElement();
-		if(obj instanceof Solution) {
-			Solution solution = (Solution) obj;
+		if(obj instanceof QSolution) {
+			QSolution solution = (QSolution) obj;
 			CompareModelView.compare(solution.getOriginal(), solution.getModel());
 		} else {
 			showError("An error occured when retrieving the solution.");

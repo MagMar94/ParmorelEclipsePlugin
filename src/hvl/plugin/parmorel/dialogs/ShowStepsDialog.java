@@ -19,7 +19,7 @@ import hvl.plugin.parmorel.views.ActionDescriprionLabelProvider;
 import hvl.plugin.parmorel.views.ErrorDescriptionLabelProvider;
 import hvl.plugin.parmorel.views.SolutionNumberColumnLabelProvider;
 import hvl.plugin.parmorel.views.WeightColumnLabelProvider;
-import hvl.projectparmorel.general.AppliedAction;
+import hvl.projectparmorel.qlearning.AppliedAction;
 
 import org.eclipse.swt.widgets.Table;
 

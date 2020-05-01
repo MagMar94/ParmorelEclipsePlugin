@@ -7,7 +7,7 @@ import hvl.plugin.parmorel.actions.CompareAction;
 import hvl.plugin.parmorel.actions.RepairWithSelectedFile;
 import hvl.plugin.parmorel.actions.ShowStepsAction;
 import hvl.plugin.parmorel.model.PossibleSolutions;
-import hvl.projectparmorel.modelrepair.Solution;
+import hvl.projectparmorel.qlearning.QSolution;
 
 import org.eclipse.jface.viewers.*;
 import org.eclipse.jface.action.*;
@@ -196,7 +196,7 @@ public class RepairSelectorView extends ViewPart {
 		viewer.getControl().setFocus();
 	}
 
-	public void updateSolutions(List<Solution> updatedSolutions) {
+	public void updateSolutions(List<QSolution> updatedSolutions) {
 		solutionNumberColumnLabelProvider.resetCounter();
 		viewer.refresh();
 		if(updatedSolutions.isEmpty()) {
