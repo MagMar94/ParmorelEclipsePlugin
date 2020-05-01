@@ -7,8 +7,8 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredViewer;
 import hvl.plugin.parmorel.dialogs.ShowStepsDialog;
-import hvl.projectparmorel.general.AppliedAction;
-import hvl.projectparmorel.modelrepair.Solution;
+import hvl.projectparmorel.qlearning.AppliedAction;
+import hvl.projectparmorel.qlearning.QSolution;
 
 public class ShowStepsAction extends Action {
 	private StructuredViewer viewer;
@@ -23,8 +23,8 @@ public class ShowStepsAction extends Action {
 	public void run() {
 		IStructuredSelection selection = viewer.getStructuredSelection();
 		Object obj = selection.getFirstElement();
-		if (obj instanceof Solution) {
-			Solution solution = (Solution) obj;
+		if (obj instanceof QSolution) {
+			QSolution solution = (QSolution) obj;
 			List<AppliedAction> steps = solution.getSequence();
 			displaySteps(steps);
 		} else {

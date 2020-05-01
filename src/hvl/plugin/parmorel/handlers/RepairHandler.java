@@ -20,7 +20,9 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ListSelectionDialog;
 
 import hvl.plugin.parmorel.model.ParmorelModelFixer;
-import hvl.projectparmorel.modelrepair.Solution;
+import hvl.projectparmorel.exceptions.NoErrorsInModelException;
+import hvl.projectparmorel.qlearning.QSolution;
+import hvl.projectparmorel.reward.PreferenceOption;
 
 public class RepairHandler implements IHandler {
 	public final ParmorelModelFixer modelFixer;
@@ -70,16 +72,20 @@ public class RepairHandler implements IHandler {
 		} else {
 			String[] result = new String[selection.length];
 			System.arraycopy(selection, 0, result, 0, selection.length);
-			List<Integer> preferences = getPreferencesFrom(result);
-			fixSelectedModelWith(preferences);
+			List<PreferenceOption> preferences = getPreferencesFrom(result);
+			try {
+				fixSelectedModelWith(preferences);
+			} catch (NoErrorsInModelException e) {
+				MessageDialog.openWarning(shell, "Info", "No supported errors found in the model.");
+			}
 		}
 		isHandled = true;
 		return null;
 	}
 
-	private List<Solution> fixSelectedModelWith(List<Integer> preferences) {
+	private List<QSolution> fixSelectedModelWith(List<PreferenceOption> preferences) throws NoErrorsInModelException {
 		File model = getSelectedFile();
-		List<Solution> possibleSolutions = modelFixer.fixModel(model, preferences);
+		List<QSolution> possibleSolutions = modelFixer.fixModel(model, preferences);
 		try {
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView("hvl.plugin.parmorel.views.RepairSelectorView");
 		} catch (PartInitException e) {
@@ -103,31 +109,31 @@ public class RepairHandler implements IHandler {
 	
 
 
-	private List<Integer> getPreferencesFrom(String[] stringPreferences) {
-		List<Integer> preferences = new ArrayList<>();
+	private List<PreferenceOption> getPreferencesFrom(String[] stringPreferences) {
+		List<PreferenceOption> preferences = new ArrayList<>();
 		for (String prefOption : stringPreferences) {
-			int preference = getPreferenceNumberFrom(prefOption);
+			PreferenceOption preference = getPreferenceNumberFrom(prefOption);
 			preferences.add(preference);
 		}
 		return preferences;
 	}
 
-	private int getPreferenceNumberFrom(String preferenceAsString) {
+	private PreferenceOption getPreferenceNumberFrom(String preferenceAsString) {
 		if (preferenceAsString.equals(shorterSequences))
-			return 0;
+			return PreferenceOption.SHORT_SEQUENCES_OF_ACTIONS;
 		if (preferenceAsString.equals(longerSequences))
-			return 1;
+			return PreferenceOption.LONG_SEQUENCES_OF_ACTIONS;
 		if (preferenceAsString.equals(higherInContext))
-			return 2;
+			return PreferenceOption.REPAIR_HIGH_IN_CONTEXT_HIERARCHY;
 		if (preferenceAsString.equals(lowerInContext))
-			return 3;
+			return PreferenceOption.REPAIR_LOW_IN_CONTEXT_HIERARCHY;
 		if (preferenceAsString.equals(rewardModification))
-			return 6;
+			return PreferenceOption.REWARD_MODIFICATION_OF_MODEL;
 		if (preferenceAsString.equals(punishModification))
-			return 5;
+			return PreferenceOption.PUNISH_MODIFICATION_OF_MODEL;
 		if (preferenceAsString.equals(punishDeletion))
-			return 4;
-		return -1;
+			return PreferenceOption.PUNISH_DELETION;
+		return null;
 	}
 
 	@Override

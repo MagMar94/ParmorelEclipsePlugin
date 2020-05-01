@@ -2,7 +2,7 @@ package hvl.plugin.parmorel.views;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 
-import hvl.projectparmorel.general.AppliedAction;
+import hvl.projectparmorel.qlearning.AppliedAction;
 
 public class ErrorDescriptionLabelProvider extends ColumnLabelProvider {
 	@Override

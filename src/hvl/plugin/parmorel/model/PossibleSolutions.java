@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hvl.plugin.parmorel.views.RepairSelectorView;
-import hvl.projectparmorel.modelrepair.Solution;
+import hvl.projectparmorel.qlearning.QSolution;
 
 public enum PossibleSolutions {
 	INSTANCE;
 
-	private List<Solution> solutions;
+	private List<QSolution> solutions;
 	private RepairSelectorView view;
 	
 	private PossibleSolutions() {
@@ -17,13 +17,13 @@ public enum PossibleSolutions {
 		view = null;
 	}
 	
-	public List<Solution> getSolutions(){
+	public List<QSolution> getSolutions(){
 		return solutions;
 	}
 	
-	public void updateSolutions(List<Solution> updatedSolutions) {
+	public void updateSolutions(List<QSolution> updatedSolutions) {
 		solutions.clear();
-		for(Solution solution : updatedSolutions) {
+		for(QSolution solution : updatedSolutions) {
 			solutions.add(solution);
 		}
 		if(view != null) {
