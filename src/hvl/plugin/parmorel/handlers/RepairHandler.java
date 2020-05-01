@@ -35,6 +35,11 @@ public class RepairHandler implements IHandler {
 	private String punishModification = "Punish modification of the original model";
 	private String punishDeletion = "Punish deletion";
 	private String closestDistance = "Prefer close distance to original";
+	private String preferMaintainability = "Prefer maintainability";
+	private String preferUnderstandability = "Prefer understandability";
+	private String preferComplexity = "Prefer complexity";
+	private String preferReuse = "Prefer reuse";
+	private String preferRelaxation = "Prefer relaxation";
 
 	
 	private boolean isHandled;
@@ -136,6 +141,16 @@ public class RepairHandler implements IHandler {
 			return PreferenceOption.PUNISH_DELETION;
 		if(preferenceAsString.equals(closestDistance))
 			return PreferenceOption.PREFER_CLOSE_DISTANCE_TO_ORIGINAL;
+		if(preferenceAsString.equals(preferMaintainability)) 
+			return PreferenceOption.PREFER_MAINTAINABILITY;
+		if(preferenceAsString.equals(preferUnderstandability))
+			return PreferenceOption.PREFER_UNDERSTANDABILITY;
+		if(preferenceAsString.equals(preferComplexity))
+			return PreferenceOption.PREFER_COMPLEXITY;
+		if(preferenceAsString.equals(preferReuse))
+			return PreferenceOption.PREFER_REUSE;
+		if(preferenceAsString.equals(preferRelaxation))
+			return PreferenceOption.PREFER_RELAXATION;
 		return null;
 	}
 
