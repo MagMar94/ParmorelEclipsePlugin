@@ -20,9 +20,9 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ListSelectionDialog;
 
 import hvl.plugin.parmorel.model.ParmorelModelFixer;
-import hvl.projectparmorel.exceptions.NoErrorsInModelException;
-import hvl.projectparmorel.qlearning.QSolution;
-import hvl.projectparmorel.reward.PreferenceOption;
+import no.hvl.projectparmorel.exceptions.NoErrorsInModelException;
+import no.hvl.projectparmorel.qlearning.QSolution;
+import no.hvl.projectparmorel.qlearning.reward.PreferenceOption;
 
 public class RepairHandler implements IHandler {
 	public final ParmorelModelFixer modelFixer;

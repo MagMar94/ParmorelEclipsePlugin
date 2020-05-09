@@ -2,7 +2,7 @@ package hvl.plugin.parmorel.views;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 
-import hvl.projectparmorel.qlearning.QSolution;
+import no.hvl.projectparmorel.qlearning.QSolution;
 
 public class NumberOfActionsAppliedColumnLabelProvider extends ColumnLabelProvider {
 	@Override

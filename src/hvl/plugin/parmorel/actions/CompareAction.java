@@ -6,7 +6,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredViewer;
 
 import hvl.plugin.parmorel.views.CompareModelView;
-import hvl.projectparmorel.qlearning.QSolution;
+import no.hvl.projectparmorel.qlearning.QSolution;
 
 public class CompareAction extends Action {
 	

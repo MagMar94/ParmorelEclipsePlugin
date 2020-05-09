@@ -26,4 +26,4 @@ Bundle-ClassPath: .,
  projectparmorel/SimilarityMetamodelsChecker/required/SimMetriToolPlugin.jar,
  projectparmorel/SimilarityMetamodelsChecker/required/simmetrics_jar_v1_6_2_d07_02_07.jar
 Export-Package: org.epsilon.ecl.tools.textcomparison.simmetrics
-Import-Package: hvl.projectparmorel
+Import-Package: no.hvl.projectparmorel

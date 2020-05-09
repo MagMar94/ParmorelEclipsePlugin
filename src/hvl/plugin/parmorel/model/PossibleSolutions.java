@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hvl.plugin.parmorel.views.RepairSelectorView;
-import hvl.projectparmorel.qlearning.QSolution;
+import no.hvl.projectparmorel.qlearning.QSolution;
 
 public enum PossibleSolutions {
 	INSTANCE;

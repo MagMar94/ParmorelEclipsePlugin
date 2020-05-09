@@ -2,8 +2,8 @@ package hvl.plugin.parmorel.views;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 
-import hvl.projectparmorel.exceptions.DistanceUnavailableException;
-import hvl.projectparmorel.qlearning.QSolution;
+import no.hvl.projectparmorel.exceptions.DistanceUnavailableException;
+import no.hvl.projectparmorel.qlearning.QSolution;
 
 public class DistanceLabelProvider extends ColumnLabelProvider {	
 	@Override

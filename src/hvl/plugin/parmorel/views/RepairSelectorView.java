@@ -7,7 +7,7 @@ import hvl.plugin.parmorel.actions.CompareAction;
 import hvl.plugin.parmorel.actions.RepairWithSelectedFile;
 import hvl.plugin.parmorel.actions.ShowStepsAction;
 import hvl.plugin.parmorel.model.PossibleSolutions;
-import hvl.projectparmorel.qlearning.QSolution;
+import no.hvl.projectparmorel.qlearning.QSolution;
 
 import org.eclipse.jface.viewers.*;
 import org.eclipse.jface.action.*;

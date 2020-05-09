@@ -7,8 +7,8 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredViewer;
 import hvl.plugin.parmorel.dialogs.ShowStepsDialog;
-import hvl.projectparmorel.qlearning.AppliedAction;
-import hvl.projectparmorel.qlearning.QSolution;
+import no.hvl.projectparmorel.qlearning.AppliedAction;
+import no.hvl.projectparmorel.qlearning.QSolution;
 
 public class ShowStepsAction extends Action {
 	private StructuredViewer viewer;

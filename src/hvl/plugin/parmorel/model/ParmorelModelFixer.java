@@ -4,12 +4,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import hvl.projectparmorel.Solution;
-import hvl.projectparmorel.ecore.EcoreQModelFixer;
-import hvl.projectparmorel.exceptions.NoErrorsInModelException;
-import hvl.projectparmorel.qlearning.QModelFixer;
-import hvl.projectparmorel.qlearning.QSolution;
-import hvl.projectparmorel.reward.PreferenceOption;
+import no.hvl.projectparmorel.Solution;
+import no.hvl.projectparmorel.exceptions.NoErrorsInModelException;
+import no.hvl.projectparmorel.qlearning.QModelFixer;
+import no.hvl.projectparmorel.qlearning.QSolution;
+import no.hvl.projectparmorel.qlearning.ecore.EcoreQModelFixer;
+import no.hvl.projectparmorel.qlearning.reward.PreferenceOption;
 
 public class ParmorelModelFixer {
 	private List<QSolution> possibleSolutions;
