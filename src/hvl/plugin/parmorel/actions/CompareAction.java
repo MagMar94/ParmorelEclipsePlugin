@@ -23,7 +23,7 @@ public class CompareAction extends Action {
 		Object obj = selection.getFirstElement();
 		if(obj instanceof QSolution) {
 			QSolution solution = (QSolution) obj;
-			CompareModelView.compare(solution.getOriginal(), solution.getModel());
+			CompareModelView.compare(solution.getModel(), solution.getOriginal());
 		} else {
 			showError("An error occured when retrieving the solution.");
 		}
