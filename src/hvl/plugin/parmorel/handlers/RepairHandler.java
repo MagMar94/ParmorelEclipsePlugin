@@ -1,8 +1,12 @@
 package hvl.plugin.parmorel.handlers;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -22,6 +26,7 @@ import org.eclipse.ui.dialogs.ListSelectionDialog;
 import hvl.plugin.parmorel.model.ParmorelModelFixer;
 import no.hvl.projectparmorel.exceptions.NoErrorsInModelException;
 import no.hvl.projectparmorel.qlearning.QSolution;
+import no.hvl.projectparmorel.qlearning.ecore.EcoreQModelFixer;
 import no.hvl.projectparmorel.qlearning.reward.PreferenceOption;
 
 public class RepairHandler implements IHandler {
@@ -80,9 +85,21 @@ public class RepairHandler implements IHandler {
 			System.arraycopy(selection, 0, result, 0, selection.length);
 			List<PreferenceOption> preferences = getPreferencesFrom(result);
 			try {
+				
+				Logger logger = Logger.getLogger(EcoreQModelFixer.LOGGER_NAME);
+				FileHandler fh = new FileHandler("Parmorel.log");
+				logger.addHandler(fh);
+				SimpleFormatter formatter = new SimpleFormatter();
+				fh.setFormatter(formatter);
 				fixSelectedModelWith(preferences);
+				logger.removeHandler(fh);
+				fh.close();
 			} catch (NoErrorsInModelException e) {
 				MessageDialog.openWarning(shell, "Info", "No supported errors found in the model.");
+			} catch (SecurityException e) {
+				MessageDialog.openWarning(shell, "Oops", "Problem occured when launching repair.");
+			} catch (IOException e) {
+				MessageDialog.openWarning(shell, "Oops", "Problem occured when launching repair.");
 			}
 		}
 		isHandled = true;

@@ -19,6 +19,7 @@ public class ParmorelModelFixer {
 	public ParmorelModelFixer() {
 		modelFixer = new EcoreQModelFixer();
 		possibleSolutions = new ArrayList<QSolution>();
+		
 	}
 	
 	/**
